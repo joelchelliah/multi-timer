@@ -3,8 +3,9 @@ module Timer exposing (Model, Msg, init, update, tick, view)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onInput, onClick)
-
+import FontAwesome
 import String exposing (toInt)
+import Color
 
 -- Model
 
@@ -43,26 +44,30 @@ tick ({duration, running} as model) = case (duration, running) of
 -- View
 
 view : Model -> Html Msg
-view model = span [ mainStyle ]
-                  [ div [ buttonGroupStyle ]
-                        [ button [ durationStyle, onClick (Set "7200") ] [ text "2h" ]
-                        , button [ durationStyle, onClick (Set "5400") ] [ text "1h 30min" ]
-                        , button [ durationStyle, onClick (Set "2700") ] [ text "45min" ]
-                        , button [ durationStyle, onClick (Set "10") ] [ text "10s" ]
-                        ]
-                  , div [ buttonGroupStyle ]
-                        [ input [ placeholder "Set duration"
-                                , value <| toString model.duration
-                                , disabled model.running
-                                , onInput Set
-                                , inputStyle model
-                                ] [] ]
-                  , div [ buttonGroupStyle ]
-                        [ button [ buttonStyle, onClick Start ] [ text "Start" ]
-                        , button [ buttonStyle, onClick Pause ] [ text "Pause" ]
-                        , button [ buttonStyle, onClick Stop ] [ text "Stop" ]
-                        ]
-                  ]
+view model = let iconColor = Color.rgb 190 190 240
+                 playIcon  = FontAwesome.play iconColor 20
+                 pauseIcon = FontAwesome.pause iconColor 20
+                 stopIcon  = FontAwesome.stop iconColor 20
+             in span [ mainStyle ]
+                     [ div [ buttonGroupStyle ]
+                           [ button [ durationStyle, onClick (Set "7200") ] [ text "2h" ]
+                           , button [ durationStyle, onClick (Set "5400") ] [ text "1h 30min" ]
+                           , button [ durationStyle, onClick (Set "2700") ] [ text "45min" ]
+                           , button [ durationStyle, onClick (Set "10") ] [ text "10s" ]
+                           ]
+                     , div [ buttonGroupStyle ]
+                           [ input [ placeholder "Set duration"
+                                   , value <| toString model.duration
+                                   , disabled model.running
+                                   , onInput Set
+                                   , inputStyle model
+                                   ] [] ]
+                     , div [ buttonGroupStyle ]
+                           [ button [ buttonStyle, onClick Start ] [ playIcon ]
+                           , button [ buttonStyle, onClick Pause ] [ pauseIcon ]
+                           , button [ buttonStyle, onClick Stop ] [ stopIcon ]
+                           ]
+                     ]
 
 mainStyle : Attribute msg
 mainStyle = style [ ("display", "inline-block")
@@ -72,13 +77,26 @@ mainStyle = style [ ("display", "inline-block")
 buttonGroupStyle : Attribute msg
 buttonGroupStyle = style [ ("display", "block") ]
 
+buttonStyle : Attribute msg
+buttonStyle = style [ ("text-align", "center")
+                    , ("margin", "0.2em 0.4em")
+                    , ("padding", "0.25em 0.9em 0.1em")
+                    , ("font-size", "1em")
+                    , ("display", "inline-block")
+                    , ("background-color", "#114")
+                    , ("border-color", "#55A")
+                    , ("-webkit-border-radius", "0.4em")
+                    ]
+
 durationStyle : Attribute msg
 durationStyle = style [ ("text-align", "center")
                       , ("margin", "0.2em 0.4em")
                       , ("font-size", "0.6em")
                       , ("display", "inline-block")
+                      , ("color", "#BBE")
+                      , ("background-color", "#114")
+                      , ("border-color", "#55A")
                       , ("-webkit-border-radius", "0.4em")
-                      , ("background-color", "#DDF")
                       ]
 
 inputStyle : Model -> Attribute msg
@@ -99,11 +117,3 @@ inputStyle {duration, running} =
                                        then runningColor
                                        else stoppedColor)
            ]
-
-buttonStyle : Attribute msg
-buttonStyle = style [ ("text-align", "center")
-                    , ("margin", "0.2em 0.4em")
-                    , ("font-size", "1em")
-                    , ("display", "inline-block")
-                    , ("-webkit-border-radius", "0.4em")
-                    ]
