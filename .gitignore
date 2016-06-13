@@ -1,5 +1,5 @@
-#Artifacts and packages
+# Artifacts and packages
 elm-stuff
 
-# Output files
-index.html
+# Output
+target
