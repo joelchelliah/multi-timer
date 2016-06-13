@@ -43,29 +43,39 @@ tick ({duration, running} as model) = case (duration, running) of
 -- View
 
 view : Model -> Html Msg
-view model = div []
-                 -- [ div [] [ text <| toString model.duration ]
-                 [ div [] [ button [ durationStyle, onClick (Set "7200") ] [ text "2h" ]
-                          , button [ durationStyle, onClick (Set "5400") ] [ text "1h 30min" ]
-                          , button [ durationStyle, onClick (Set "2700") ] [ text "45min" ]
-                          , button [ durationStyle, onClick (Set "10") ] [ text "10s" ]
-                          ]
-                 , div [] [ input [ placeholder "Set duration"
-                          , value <| toString model.duration
-                          , disabled model.running
-                          , onInput Set
-                          , inputStyle model
-                          ] [ ] ]
-                 , div [] [ button [ buttonStyle, onClick Start ] [ text "Start" ]
-                          , button [ buttonStyle, onClick Pause ] [ text "Pause" ]
-                          , button [ buttonStyle, onClick Stop ] [ text "Stop" ]
-                          ]
-                 ]
+view model = span [ mainStyle ]
+                  [ div [ buttonGroupStyle ]
+                        [ button [ durationStyle, onClick (Set "7200") ] [ text "2h" ]
+                        , button [ durationStyle, onClick (Set "5400") ] [ text "1h 30min" ]
+                        , button [ durationStyle, onClick (Set "2700") ] [ text "45min" ]
+                        , button [ durationStyle, onClick (Set "10") ] [ text "10s" ]
+                        ]
+                  , div [ buttonGroupStyle ]
+                        [ input [ placeholder "Set duration"
+                                , value <| toString model.duration
+                                , disabled model.running
+                                , onInput Set
+                                , inputStyle model
+                                ] [] ]
+                  , div [ buttonGroupStyle ]
+                        [ button [ buttonStyle, onClick Start ] [ text "Start" ]
+                        , button [ buttonStyle, onClick Pause ] [ text "Pause" ]
+                        , button [ buttonStyle, onClick Stop ] [ text "Stop" ]
+                        ]
+                  ]
+
+mainStyle : Attribute msg
+mainStyle = style [ ("display", "inline-block")
+                  , ("padding", "0.4em")
+                  ]
+
+buttonGroupStyle : Attribute msg
+buttonGroupStyle = style [ ("display", "block") ]
 
 durationStyle : Attribute msg
 durationStyle = style [ ("text-align", "center")
                       , ("margin", "0.2em 0.4em")
-                      , ("font-size", "1em")
+                      , ("font-size", "0.6em")
                       , ("display", "inline-block")
                       , ("-webkit-border-radius", "0.4em")
                       , ("background-color", "#DDF")
@@ -78,8 +88,8 @@ inputStyle {duration, running} =
       stoppedColor = "#DDF"
   in style [ ("text-align", "center")
            , ("margin", "0.2em auto")
-           , ("font-size", "50px")
-           , ("display", "block")
+           , ("font-size", "1em")
+           , ("display", "inline-block")
            , ("border", "none")
            , ("border-bottom", "solid 1px #ddd")
            , ("-webkit-border-radius", "0.4em")
@@ -93,7 +103,7 @@ inputStyle {duration, running} =
 buttonStyle : Attribute msg
 buttonStyle = style [ ("text-align", "center")
                     , ("margin", "0.2em 0.4em")
-                    , ("font-size", "1.5em")
+                    , ("font-size", "1em")
                     , ("display", "inline-block")
                     , ("-webkit-border-radius", "0.4em")
                     ]

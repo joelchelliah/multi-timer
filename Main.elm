@@ -22,7 +22,9 @@ type alias SingleTimer = { id : Int
                          }
 
 init : (Model, Cmd Msg)
-init = let timers = Model [SingleTimer 0 (Timer.init 10)]
+init = let timers = Model [ SingleTimer 0 (Timer.init 10)
+                          , SingleTimer 1 (Timer.init 25)
+                          ]
        in (timers, Cmd.none)
 
 
