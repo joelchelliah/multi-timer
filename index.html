@@ -7641,7 +7641,7 @@ var _user$project$Timer$buttonStyle = _elm_lang$html$Html_Attributes$style(
 		[
 			{ctor: '_Tuple2', _0: 'text-align', _1: 'center'},
 			{ctor: '_Tuple2', _0: 'margin', _1: '0.2em 0.4em'},
-			{ctor: '_Tuple2', _0: 'font-size', _1: '1.5em'},
+			{ctor: '_Tuple2', _0: 'font-size', _1: '1em'},
 			{ctor: '_Tuple2', _0: 'display', _1: 'inline-block'},
 			{ctor: '_Tuple2', _0: '-webkit-border-radius', _1: '0.4em'}
 		]));
@@ -7655,8 +7655,8 @@ var _user$project$Timer$inputStyle = function (_p0) {
 			[
 				{ctor: '_Tuple2', _0: 'text-align', _1: 'center'},
 				{ctor: '_Tuple2', _0: 'margin', _1: '0.2em auto'},
-				{ctor: '_Tuple2', _0: 'font-size', _1: '50px'},
-				{ctor: '_Tuple2', _0: 'display', _1: 'block'},
+				{ctor: '_Tuple2', _0: 'font-size', _1: '1em'},
+				{ctor: '_Tuple2', _0: 'display', _1: 'inline-block'},
 				{ctor: '_Tuple2', _0: 'border', _1: 'none'},
 				{ctor: '_Tuple2', _0: 'border-bottom', _1: 'solid 1px #ddd'},
 				{ctor: '_Tuple2', _0: '-webkit-border-radius', _1: '0.4em'},
@@ -7672,10 +7672,21 @@ var _user$project$Timer$durationStyle = _elm_lang$html$Html_Attributes$style(
 		[
 			{ctor: '_Tuple2', _0: 'text-align', _1: 'center'},
 			{ctor: '_Tuple2', _0: 'margin', _1: '0.2em 0.4em'},
-			{ctor: '_Tuple2', _0: 'font-size', _1: '1em'},
+			{ctor: '_Tuple2', _0: 'font-size', _1: '0.6em'},
 			{ctor: '_Tuple2', _0: 'display', _1: 'inline-block'},
 			{ctor: '_Tuple2', _0: '-webkit-border-radius', _1: '0.4em'},
 			{ctor: '_Tuple2', _0: 'background-color', _1: '#DDF'}
+		]));
+var _user$project$Timer$buttonGroupStyle = _elm_lang$html$Html_Attributes$style(
+	_elm_lang$core$Native_List.fromArray(
+		[
+			{ctor: '_Tuple2', _0: 'display', _1: 'block'}
+		]));
+var _user$project$Timer$mainStyle = _elm_lang$html$Html_Attributes$style(
+	_elm_lang$core$Native_List.fromArray(
+		[
+			{ctor: '_Tuple2', _0: 'display', _1: 'inline-block'},
+			{ctor: '_Tuple2', _0: 'padding', _1: '0.4em'}
 		]));
 var _user$project$Timer$Model = F2(
 	function (a, b) {
@@ -7741,15 +7752,15 @@ var _user$project$Timer$Set = function (a) {
 };
 var _user$project$Timer$view = function (model) {
 	return A2(
-		_elm_lang$html$Html$div,
+		_elm_lang$html$Html$span,
 		_elm_lang$core$Native_List.fromArray(
-			[]),
+			[_user$project$Timer$mainStyle]),
 		_elm_lang$core$Native_List.fromArray(
 			[
 				A2(
 				_elm_lang$html$Html$div,
 				_elm_lang$core$Native_List.fromArray(
-					[]),
+					[_user$project$Timer$buttonGroupStyle]),
 				_elm_lang$core$Native_List.fromArray(
 					[
 						A2(
@@ -7804,7 +7815,7 @@ var _user$project$Timer$view = function (model) {
 				A2(
 				_elm_lang$html$Html$div,
 				_elm_lang$core$Native_List.fromArray(
-					[]),
+					[_user$project$Timer$buttonGroupStyle]),
 				_elm_lang$core$Native_List.fromArray(
 					[
 						A2(
@@ -7824,7 +7835,7 @@ var _user$project$Timer$view = function (model) {
 				A2(
 				_elm_lang$html$Html$div,
 				_elm_lang$core$Native_List.fromArray(
-					[]),
+					[_user$project$Timer$buttonGroupStyle]),
 				_elm_lang$core$Native_List.fromArray(
 					[
 						A2(
@@ -7908,7 +7919,11 @@ var _user$project$Main$init = function () {
 				A2(
 				_user$project$Main$SingleTimer,
 				0,
-				_user$project$Timer$init(10))
+				_user$project$Timer$init(10)),
+				A2(
+				_user$project$Main$SingleTimer,
+				1,
+				_user$project$Timer$init(25))
 			]));
 	return {ctor: '_Tuple2', _0: timers, _1: _elm_lang$core$Platform_Cmd$none};
 }();
