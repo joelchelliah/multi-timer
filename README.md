@@ -1,7 +1,7 @@
 # Multi-Timer
 > Time all the things!
 
-A simple way to create up and run multiple timers. Created as an exercise to learning Elm.
+A simple way to create and run multiple timers. Created as an exercise to learning Elm.
 
 Todo:
 - Support for adding and removing timers.
