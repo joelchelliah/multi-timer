@@ -48,72 +48,84 @@ view model = let iconColor = Color.rgb 190 190 240
                  playIcon  = FontAwesome.play iconColor 20
                  pauseIcon = FontAwesome.pause iconColor 20
                  stopIcon  = FontAwesome.stop iconColor 20
-             in span [ mainStyle ]
-                     [ div [ buttonGroupStyle ]
-                           [ button [ durationStyle, onClick (Set "7200") ] [ text "2h" ]
-                           , button [ durationStyle, onClick (Set "5400") ] [ text "1h 30min" ]
-                           , button [ durationStyle, onClick (Set "2700") ] [ text "45min" ]
-                           , button [ durationStyle, onClick (Set "10") ] [ text "10s" ]
+             in span [ style mainStyle ]
+                     [ div [ style buttonGroupStyle ]
+                           [ button [ style durationStyle, onClick (Set "7200") ] [ text "2h" ]
+                           , button [ style durationStyle, onClick (Set "5400") ] [ text "1h 30min" ]
+                           , button [ style durationStyle, onClick (Set "2700") ] [ text "45min" ]
+                           , button [ style durationStyle, onClick (Set "10") ] [ text "10s" ]
                            ]
-                     , div [ buttonGroupStyle ]
+                     , div [ style inputGroupStyle ]
                            [ input [ placeholder "Set duration"
                                    , value <| toString model.duration
                                    , disabled model.running
                                    , onInput Set
-                                   , inputStyle model
+                                   , style (inputStyle model)
                                    ] [] ]
-                     , div [ buttonGroupStyle ]
-                           [ button [ buttonStyle, onClick Start ] [ playIcon ]
-                           , button [ buttonStyle, onClick Pause ] [ pauseIcon ]
-                           , button [ buttonStyle, onClick Stop ] [ stopIcon ]
+                     , div [ style buttonGroupStyle ]
+                           [ button [ style buttonStyle, onClick Start ] [ playIcon ]
+                           , button [ style buttonStyle, onClick Pause ] [ pauseIcon ]
+                           , button [ style buttonStyle, onClick Stop ] [ stopIcon ]
                            ]
                      ]
 
-mainStyle : Attribute msg
-mainStyle = style [ ("display", "inline-block")
-                  , ("padding", "0.4em")
-                  ]
 
-buttonGroupStyle : Attribute msg
-buttonGroupStyle = style [ ("display", "block") ]
+-- Style
 
-buttonStyle : Attribute msg
-buttonStyle = style [ ("text-align", "center")
-                    , ("margin", "0.2em 0.4em")
-                    , ("padding", "0.25em 0.9em 0.1em")
-                    , ("font-size", "1em")
-                    , ("display", "inline-block")
-                    , ("background-color", "#114")
-                    , ("border-color", "#55A")
-                    , ("-webkit-border-radius", "0.4em")
+type alias Style = List ( String, String )
+
+mainStyle : Style
+mainStyle = [ ("display", "block")
+            , ("padding-bottom", "0.8em")
+            , ("margin-top", "0.8em")
+            , ("border-bottom", "solid 1px rgb(190, 190, 240)")
+            ]
+
+buttonGroupStyle : Style
+buttonGroupStyle = [ ("display", "block") ]
+
+inputGroupStyle : Style
+inputGroupStyle = [ ("display", "block")
+                    , ("margin-left", "0.2em")
                     ]
 
-durationStyle : Attribute msg
-durationStyle = style [ ("text-align", "center")
-                      , ("margin", "0.2em 0.4em")
-                      , ("font-size", "0.6em")
-                      , ("display", "inline-block")
-                      , ("color", "#BBE")
-                      , ("background-color", "#114")
-                      , ("border-color", "#55A")
-                      , ("-webkit-border-radius", "0.4em")
-                      ]
 
-inputStyle : Model -> Attribute msg
+buttonStyle : Style
+buttonStyle = [ ("text-align", "center")
+              , ("margin", "0.2em 0.4em")
+              , ("padding", "0.25em 0.9em 0.1em")
+              , ("font-size", "1em")
+              , ("display", "inline-block")
+              , ("background-color", "#114")
+              , ("border-color", "#55A")
+              , ("-webkit-border-radius", "0.4em")
+              ]
+
+durationStyle : Style
+durationStyle = [ ("text-align", "center")
+                , ("margin", "0.2em 0.4em")
+                , ("font-size", "0.6em")
+                , ("display", "inline-block")
+                , ("color", "#BBE")
+                , ("background-color", "#114")
+                , ("border-color", "#55A")
+                , ("-webkit-border-radius", "0.4em")
+                ]
+
+inputStyle : Model -> Style
 inputStyle {duration, running} =
   let doneColor = "#6FA"
       runningColor = "#DEF"
       stoppedColor = "#DDF"
-  in style [ ("text-align", "center")
-           , ("margin", "0.2em auto")
-           , ("font-size", "1em")
-           , ("display", "inline-block")
-           , ("border", "none")
-           , ("border-bottom", "solid 1px #ddd")
-           , ("-webkit-border-radius", "0.4em")
-           , ("background-color", if duration == 0
-                                  then doneColor
-                                  else if running
-                                       then runningColor
-                                       else stoppedColor)
-           ]
+      bgColor = if duration == 0
+                then doneColor
+                else if running then runningColor else stoppedColor
+  in [ ("text-align", "center")
+     , ("margin", "0.2em auto")
+     , ("font-size", "1em")
+     , ("display", "inline-block")
+     , ("border", "none")
+     , ("border-bottom", "solid 1px #ddd")
+     , ("-webkit-border-radius", "0.4em")
+     , ("background-color", bgColor)
+     ]
