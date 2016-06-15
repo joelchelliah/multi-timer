@@ -1,0 +1,29 @@
+body, html {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1em;
+}
+
+#main-container {
+  padding: 1em 0.5em 0;
+  margin: 1em;
+  display: block;
+  width: 16em;
+  text-align: center;
+  background-color: #EDF3F7;
+  border: solid 0.2em #AAC;
+  -webkit-border-radius: 0.4em;
+}
+
+#github-link {
+  position: relative;
+  padding: 2em 0 0.5em;
+  bottom: 0.5em;
+  left: 0.5em;
+  font-size: 0.8em;
+
+  a {
+    padding: 0 4px 12px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+}

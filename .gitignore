@@ -1,1 +1,8 @@
+# Artifacts and packages
 elm-stuff
+
+# Output
+target
+
+# Other
+npm-debug.log
