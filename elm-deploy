@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# Deploy the application by pushing files to gh-pages
+
+#   0. Build the application (This is done automaticall by Atom)
+# elm-make src/Main.elm --output target/main.js
+# node-sass --output-style compressed css/style.scss > css/style.min.css
+
+#   1. Copy main.js and style.min.css
+mkdir tmp
+cp css/style.min.css tmp/
+cp target/main.js tmp/
+
+#   2. Push to gh-pages
+git checkout gh-pages
+cp -f tmp/style.min.css css/
+cp -f tmp/main.js target/
+git add css target
+git commit -m "Auto-deployed new version"
+git push origin gh-pages
+
+#   3. Clean up
+rm -rf tmp
+git checkout master
