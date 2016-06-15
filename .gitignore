@@ -1,4 +1,8 @@
 elm-stuff
+elm-deploy
+
 css/style.scss
 src
+tmp
+
 *.json
