@@ -1,4 +1,4 @@
-module Timer exposing (Model, Msg, init, update, tick, view)
+module Component.Timer exposing (Model, Msg, init, update, tick, view)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
