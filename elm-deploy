@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+# Deploy the application by pushing files to gh-pages
+
+#   0. Build the application manually
+# elm-make Main.elm --output=target/index.html
+
+#   1. Copy main.js and style.min.css
+mkdir tmp
+cp css/style.min.css tmp/
+cp target/main.js tmp/
+
+#   2. Push to gh-pages
+git checkout gh-pages
+cp -f tmp/style.min.css css/
+cp -f tmp/main.js target/
+git add .
+git commit -m "Auto deployed new version"
+git push origin gh-pages
+
+#   3. Clean up
+rm -rf tmp
+git checkout master
