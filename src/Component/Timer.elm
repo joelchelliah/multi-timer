@@ -1,4 +1,4 @@
-module Component.Timer exposing (Model, Msg, init, update, tick, view)
+module Component.Timer exposing (Model, Msg(Tick), init, update, view)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -9,37 +9,90 @@ import Color
 
 -- Model
 
-type alias Model = { duration : Int
+type alias Model = { duration : Duration
                    , running : Bool
                    }
 
-init : Int -> Model
-init duration = Model duration False
+type alias Duration = { hours: Int
+                      , minutes: Int
+                      , seconds: Int
+                      }
 
+init : Model
+init = Model (Duration 0 0 0) False
+
+initWithDuration : Duration -> Model
+initWithDuration d = Model d False
+
+durationInSeconds : Duration -> Int
+durationInSeconds {hours, minutes, seconds} =
+  3600 * hours + 60 * minutes + seconds
 
 -- Update
 
-type Msg = Set String
+type Msg = SetHours String
+         | SetMins  String
+         | SetSecs  String
+         | IncHours
+         | IncMins
+         | IncSecs
+         | DecHours
+         | DecMins
+         | DecSecs
          | Start
          | Pause
          | Stop
+         | Tick
 
 update : Msg -> Model -> Model
-update msg model =
-  let durationToInt = toInt >> Result.toMaybe >> Maybe.withDefault 0
+update msg ({duration, running} as model) =
+  let trunc d = if d < 0 then 0 else if d > 999 then 999 else d
+      inputToInt = toInt >> Result.toMaybe >> Maybe.map trunc >> Maybe.withDefault 0
+      setDuration d = Model d False
+      finished = durationInSeconds duration == 0
   in case msg of
-    Set d -> Model (durationToInt d) False
-    Start -> if model.duration > 0
-              then { model | running = True }
-              else model
+    SetHours h -> setDuration { duration | hours = inputToInt h }
+    SetMins  m -> setDuration { duration | minutes = inputToInt m }
+    SetSecs  s -> setDuration { duration | seconds = inputToInt s }
+
+    IncHours -> setDuration { duration | hours   = trunc <| duration.hours   + 1 }
+    IncMins  -> setDuration { duration | minutes = trunc <| duration.minutes + 1 }
+    IncSecs  -> setDuration { duration | seconds = trunc <| duration.seconds + 1 }
+    DecHours -> setDuration { duration | hours   = trunc <| duration.hours   - 1 }
+    DecMins  -> setDuration { duration | minutes = trunc <| duration.minutes - 1 }
+    DecSecs  -> setDuration { duration | seconds = trunc <| duration.seconds - 1 }
+
+    Start -> if finished then model else { model | running = True }
     Pause -> { model | running = False }
-    Stop  -> Model 0 False
+    Stop  -> init
+    Tick -> if finished
+            then { model | running = False }
+            else if running
+                 then { model | duration = updateDuration duration }
+                 else model
+
+updateDuration : Duration -> Duration
+updateDuration d =
+  if d.seconds > 0
+  then { d | seconds = d.seconds - 1 }
+  else if d.minutes > 0
+       then { d | minutes = d.minutes - 1
+                , seconds = 59
+            }
+       else if d.hours > 0
+            then { d | hours = d.hours - 1
+                     , minutes = 59
+                     , seconds = 59
+                 }
+            else d
 
 tick : Model -> Model
-tick ({duration, running} as model) = case (duration, running) of
-  (0, _)    -> Model 0 False
-  (d, True) -> Model (d - 1) True
-  _         -> model
+tick ({duration, running} as model) =
+  if durationInSeconds duration == 0
+  then { model | running = False }
+  else if running
+       then { model | duration = updateDuration duration }
+       else model
 
 -- View
 
@@ -48,47 +101,53 @@ view model = let iconColor = Color.rgb 190 190 240
                  playIcon  = FontAwesome.play iconColor 20
                  pauseIcon = FontAwesome.pause iconColor 20
                  stopIcon  = FontAwesome.stop iconColor 20
-             in span [ style mainStyle ]
-                     [ div [ style buttonGroupStyle ]
-                           [ button [ style durationStyle, onClick (Set "7200") ] [ text "2h" ]
-                           , button [ style durationStyle, onClick (Set "5400") ] [ text "1h 30min" ]
-                           , button [ style durationStyle, onClick (Set "2700") ] [ text "45min" ]
-                           , button [ style durationStyle, onClick (Set "10") ] [ text "10s" ]
-                           ]
-                     , div [ style inputGroupStyle ]
-                           [ input [ placeholder "Set duration"
-                                   , value <| toString model.duration
-                                   , disabled model.running
-                                   , onInput Set
-                                   , style (inputStyle model)
-                                   ] [] ]
-                     , div [ style buttonGroupStyle ]
+             in span [ class "timer" ]
+                     [ viewIncButtonGroup
+                     , viewInputGroup model
+                     , viewDecButtonGroup
+                     , div []
                            [ button [ style buttonStyle, onClick Start ] [ playIcon ]
                            , button [ style buttonStyle, onClick Pause ] [ pauseIcon ]
                            , button [ style buttonStyle, onClick Stop ] [ stopIcon ]
                            ]
                      ]
 
+viewIncButtonGroup : Html Msg
+viewIncButtonGroup = div []
+                         [ viewAdjustButton IncHours "+"
+                         , viewAdjustButton IncMins "+"
+                         , viewAdjustButton IncSecs "+"
+                         ]
 
+viewDecButtonGroup : Html Msg
+viewDecButtonGroup = div []
+                         [ viewAdjustButton DecHours "-"
+                         , viewAdjustButton DecMins "-"
+                         , viewAdjustButton DecSecs "-"
+                         ]
+
+viewAdjustButton : Msg -> String -> Html Msg
+viewAdjustButton msg txt = button [ class "btn adjust-btn", onClick msg ] [ text txt ]
+
+viewInputGroup : Model -> Html Msg
+viewInputGroup {duration, running} =
+  let seperator = text ":"
+  in div [ class "input-group" ]
+         [ viewInput duration.hours running SetHours
+         , seperator
+         , viewInput duration.minutes running SetMins
+         , seperator
+         , viewInput duration.seconds running SetSecs
+         ]
+
+viewInput : Int -> Bool -> (String -> Msg) -> Html Msg
+viewInput val dis msg = input [ value <| toString val
+                              , disabled dis
+                              , onInput msg
+                              ] []
 -- Style
 
 type alias Style = List ( String, String )
-
-mainStyle : Style
-mainStyle = [ ("display", "block")
-            , ("padding-bottom", "0.8em")
-            , ("margin-top", "0.8em")
-            , ("border-bottom", "solid 1px rgb(190, 190, 240)")
-            ]
-
-buttonGroupStyle : Style
-buttonGroupStyle = [ ("display", "block") ]
-
-inputGroupStyle : Style
-inputGroupStyle = [ ("display", "block")
-                    , ("margin-left", "0.2em")
-                    ]
-
 
 buttonStyle : Style
 buttonStyle = [ ("text-align", "center")
@@ -111,21 +170,3 @@ durationStyle = [ ("text-align", "center")
                 , ("border-color", "#55A")
                 , ("-webkit-border-radius", "0.4em")
                 ]
-
-inputStyle : Model -> Style
-inputStyle {duration, running} =
-  let doneColor = "#6FA"
-      runningColor = "#DEF"
-      stoppedColor = "#DDF"
-      bgColor = if duration == 0
-                then doneColor
-                else if running then runningColor else stoppedColor
-  in [ ("text-align", "center")
-     , ("margin", "0.2em auto")
-     , ("font-size", "1em")
-     , ("display", "inline-block")
-     , ("border", "none")
-     , ("border-bottom", "solid 1px #ddd")
-     , ("-webkit-border-radius", "0.4em")
-     , ("background-color", bgColor)
-     ]

@@ -24,8 +24,8 @@ type alias SingleTimer = { id : Int
                          }
 
 init : (Model, Cmd Msg)
-init = let timers = Model [ SingleTimer 0 (Timer.init 10)
-                          , SingleTimer 1 (Timer.init 25)
+init = let timers = Model [ SingleTimer 0 (Timer.init)
+                          , SingleTimer 1 (Timer.init)
                           ]
        in (timers, Cmd.none)
 
@@ -33,38 +33,39 @@ init = let timers = Model [ SingleTimer 0 (Timer.init 10)
 -- Update
 
 type Msg = Modify Int Timer.Msg
-         | Tick Time
+         | Tick
 
 update : Msg -> Model -> (Model, Cmd Msg)
-update msg ({timers} as model) = case msg of
-  Modify id msg ->
-    ({ model | timers = List.map (updateTimer id msg) timers}, Cmd.none)
-  Tick _ ->
-    ({ model | timers = List.map tickTimer timers}, Cmd.none)
+update msg model =
+  let updateModel f = { model | timers = List.map f model.timers}
+  in case msg of
+    Modify id msg -> (updateModel (modifyTimer id msg), Cmd.none)
+    Tick          -> (updateModel tickTimer, Cmd.none)
 
-updateTimer : Int -> Timer.Msg -> SingleTimer -> SingleTimer
-updateTimer timerId msg {id, model} = let model' = if timerId == id
-                                                   then Timer.update msg model
-                                                   else model
-                                      in SingleTimer id model'
+modifyTimer : Int -> Timer.Msg -> SingleTimer -> SingleTimer
+modifyTimer timerId msg {id, model} =
+  let model' = if timerId == id then Timer.update msg model else model
+  in SingleTimer id model'
 
 tickTimer : SingleTimer -> SingleTimer
-tickTimer {id, model} = SingleTimer id <| Timer.tick model
+tickTimer {id, model} =
+  let model' = Timer.update Timer.Tick model
+  in SingleTimer id model'
+
 
 -- Subscriptions
 
 subscriptions : Model -> Sub Msg
-subscriptions model = Time.every Time.second Tick
+subscriptions model = Time.every Time.second (\_ -> Tick)
 
 
 -- View
 
 view : Model -> Html Msg
-view {timers} = let running = List.any (\t -> t.model.duration > 0) timers
-                in div [ id "main-container" ]
-                       [ div [] <| List.map viewTimer timers
-                       , viewGithubLink
-                       ]
+view {timers} = div [ id "main-container" ]
+                    [ div [] <| List.map viewTimer timers
+                    , viewGithubLink
+                    ]
 
 viewTimer : SingleTimer -> Html Msg
 viewTimer {id, model} = App.map (Modify id) (Timer.view model)
@@ -73,5 +74,5 @@ viewGithubLink : Html Msg
 viewGithubLink = let url = "https://github.com/joelchelliah/multi-timer"
                  in div [ id "github-link" ]
                         [ Icon.github (Color.black) 20
-                        , a [ href url ] [ text "Code is on Github" ]
+                        , a [ href url ] [ text "multi-timer" ]
                         ]

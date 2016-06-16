@@ -1,0 +1,14 @@
+$border-radius: 0.4em;
+
+$color-base: #558;
+$color-background: #AAD;
+$color-border: darken($color-background, 12%);
+$color-btn: darken($color-background, 6%);
+$color-input: lighten($color-background, 12%);
+
+
+
+$font-family: Georgia,Times,Times New Roman,serif;
+$font-base: 1em #{$font-family};
+$font-input: 1em #{$font-family};
+$font-link: 0.8em #{$font-family};

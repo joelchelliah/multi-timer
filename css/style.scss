@@ -1,29 +1,61 @@
+@import 'variables';
+@import 'mixins';
+
 body, html {
-  font-family: "Times New Roman", Times, serif;
-  font-size: 1em;
+  font:  $font-base;
+  color: $color-base;
 }
 
 #main-container {
+  @include rounded-border;
+
   padding: 1em 0.5em 0;
   margin: 1em;
   display: block;
   width: 16em;
   text-align: center;
-  background-color: #EDF3F7;
-  border: solid 0.2em #AAC;
-  -webkit-border-radius: 0.4em;
+  background-color: $color-background;
 }
 
 #github-link {
-  position: relative;
   padding: 2em 0 0.5em;
-  bottom: 0.5em;
-  left: 0.5em;
-  font-size: 0.8em;
+  font: $font-link;
 
   a {
     padding: 0 4px 12px;
     display: inline-block;
     vertical-align: middle;
+  }
+}
+
+.timer {
+  display: block;
+  padding-bottom: 0.8em;
+  margin-top: 0.8em;
+  border-bottom: solid 0.1em $color-border;
+
+  .input-group {
+    display: block;
+
+    input {
+      @include rounded-border;
+
+      background-color: $color-input;
+      display: inline-block;
+      text-align: center;
+      font: $font-input;
+      margin: 0.2em 0.4em;
+      width: 3em;
+    }
+  }
+
+  .btn {
+    @include rounded-border;
+
+    &.adjust-btn {
+      background-color: $color-btn;
+      margin: 0.5em 1em;
+      width: 4em;
+    }
   }
 }
