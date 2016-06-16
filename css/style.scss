@@ -51,40 +51,35 @@ body, html {
 }
 
 .btn {
+  @include hover-icon;
   @include rounded-border;
 
-  background-color: $color-btn;
+  background-color: $color-btn-add;
+  border-color: $color-btn-add-border;
 
-  &.adjust-btn {
-    margin: 0.5em 1em;
+  &:hover {
+    background-color: darken($color-btn-add, 20%);
+    border-color: darken($color-btn-add-border, 30%);
+    color: white;
+  }
+
+  &.btn-adjust {
     width: 4em;
+    height: 1.9em;
+    margin: 0.2em 1em;
+    padding-top: 0.3em;
+  }
+
+  &.btn-player {
+    width: 4em;
+    height: 2.5em;
+    margin: 1.2em 1em 0;
   }
 
   &.btn-add {
-    background-color: $color-btn-add;
-    border-color: $color-btn-add-border;
-
     width: 8em;
     height: 3em;
     margin-top: 2em;
-
-    &:hover {
-      background-color: darken($color-btn-add, 20%);
-      border-color: darken($color-btn-add-border, 30%);
-      color: white;
-
-      span.icon {
-        display: none;
-      }
-
-      span.icon-hover {
-        display: inline-block;
-      }
-    }
-
-    span.icon-hover {
-      display: none;
-    }
 
     span.text {
       display: inline-block;

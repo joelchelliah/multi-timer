@@ -3,7 +3,7 @@ module Component.Timer exposing (Model, Msg(Tick), init, update, view)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onInput, onClick)
-import FontAwesome
+import FontAwesome as Icon
 import String exposing (toInt)
 import Color
 
@@ -97,37 +97,35 @@ tick ({duration, running} as model) =
 -- View
 
 view : Model -> Html Msg
-view model = let iconColor = Color.rgb 190 190 240
-                 playIcon  = FontAwesome.play iconColor 20
-                 pauseIcon = FontAwesome.pause iconColor 20
-                 stopIcon  = FontAwesome.stop iconColor 20
-             in span [ class "timer" ]
-                     [ viewIncButtonGroup
-                     , viewInputGroup model
-                     , viewDecButtonGroup
-                     , div []
-                           [ button [ style buttonStyle, onClick Start ] [ playIcon ]
-                           , button [ style buttonStyle, onClick Pause ] [ pauseIcon ]
-                           , button [ style buttonStyle, onClick Stop ] [ stopIcon ]
-                           ]
-                     ]
+view model = span [ class "timer" ]
+                  [ viewTimerButtonGroup Icon.plus
+                  , viewInputGroup model
+                  , viewTimerButtonGroup Icon.minus
+                  , viewPlayerButtonGroup
+                  ]
 
-viewIncButtonGroup : Html Msg
-viewIncButtonGroup = div []
-                         [ viewAdjustButton IncHours "+"
-                         , viewAdjustButton IncMins "+"
-                         , viewAdjustButton IncSecs "+"
-                         ]
+viewTimerButtonGroup : (Color.Color -> Int -> Html Msg) -> Html Msg
+viewTimerButtonGroup iconFunc =
+  let icon = flip iconFunc <| 10
+      val  = [ span [ class "icon" ] [ icon Color.black ]
+             , span [ class "icon-hover" ] [ icon Color.white ]
+             ]
+      viewButton msg = button [ class "btn btn-adjust", onClick msg ] val
+  in div [] [ viewButton IncHours
+            , viewButton IncMins
+            , viewButton IncSecs
+            ]
 
-viewDecButtonGroup : Html Msg
-viewDecButtonGroup = div []
-                         [ viewAdjustButton DecHours "-"
-                         , viewAdjustButton DecMins "-"
-                         , viewAdjustButton DecSecs "-"
-                         ]
-
-viewAdjustButton : Msg -> String -> Html Msg
-viewAdjustButton msg txt = button [ class "btn adjust-btn", onClick msg ] [ text txt ]
+viewPlayerButtonGroup : Html Msg
+viewPlayerButtonGroup =
+  let pair icon = [ span [ class "icon" ] [ icon Color.black 15 ]
+                  , span [ class "icon-hover" ] [ icon Color.white 15 ]
+                  ]
+      viewButton msg icon = button [ class "btn btn-player", onClick msg ] icon
+  in div [] [ viewButton Start <| pair Icon.play
+            , viewButton Pause <| pair Icon.pause
+            , viewButton Stop  <| pair Icon.stop
+            ]
 
 viewInputGroup : Model -> Html Msg
 viewInputGroup {duration, running} =
@@ -145,28 +143,3 @@ viewInput val dis msg = input [ value <| toString val
                               , disabled dis
                               , onInput msg
                               ] []
--- Style
-
-type alias Style = List ( String, String )
-
-buttonStyle : Style
-buttonStyle = [ ("text-align", "center")
-              , ("margin", "0.2em 0.4em")
-              , ("padding", "0.25em 0.9em 0.1em")
-              , ("font-size", "1em")
-              , ("display", "inline-block")
-              , ("background-color", "#114")
-              , ("border-color", "#55A")
-              , ("-webkit-border-radius", "0.4em")
-              ]
-
-durationStyle : Style
-durationStyle = [ ("text-align", "center")
-                , ("margin", "0.2em 0.4em")
-                , ("font-size", "0.6em")
-                , ("display", "inline-block")
-                , ("color", "#BBE")
-                , ("background-color", "#114")
-                , ("border-color", "#55A")
-                , ("-webkit-border-radius", "0.4em")
-                ]

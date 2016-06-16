@@ -5,3 +5,19 @@
       -ms-border-radius: $border-radius;
           border-radius: $border-radius;
 }
+
+@mixin hover-icon() {
+  span.icon-hover {
+    display: none;
+  }
+
+  &:hover {
+    span.icon {
+      display: none;
+    }
+
+    span.icon-hover {
+      display: inline-block;
+    }
+  }
+}
