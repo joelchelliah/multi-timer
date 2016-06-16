@@ -48,14 +48,49 @@ body, html {
       width: 3em;
     }
   }
+}
 
-  .btn {
-    @include rounded-border;
+.btn {
+  @include rounded-border;
 
-    &.adjust-btn {
-      background-color: $color-btn;
-      margin: 0.5em 1em;
-      width: 4em;
+  background-color: $color-btn;
+
+  &.adjust-btn {
+    margin: 0.5em 1em;
+    width: 4em;
+  }
+
+  &.btn-add {
+    background-color: $color-btn-add;
+    border-color: $color-btn-add-border;
+
+    width: 8em;
+    height: 3em;
+    margin-top: 2em;
+
+    &:hover {
+      background-color: darken($color-btn-add, 20%);
+      border-color: darken($color-btn-add-border, 30%);
+      color: white;
+
+      span.icon {
+        display: none;
+      }
+
+      span.icon-hover {
+        display: inline-block;
+      }
+    }
+
+    span.icon-hover {
+      display: none;
+    }
+
+    span.text {
+      display: inline-block;
+      vertical-align: top;
+      padding-left: 0.4em;
+      font-size: 1.5em;
     }
   }
 }
