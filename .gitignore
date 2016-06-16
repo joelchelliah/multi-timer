@@ -3,6 +3,7 @@ elm-stuff
 
 # Output
 target
+css/style.min.css
 
 # Other
 npm-debug.log
