@@ -49,17 +49,20 @@ removeTimer id model =
 type Msg = Modify Int Timer.Msg
          | Tick
          | Add
-         | Remove Int
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
-  let updateModel f = { model | timers = List.map f model.timers}
-      return x      = (x, Cmd.none)
+  let return x = (x, Cmd.none)
   in case msg of
-    Modify id msg -> return <| updateModel <| modifyTimer id msg
-    Tick          -> return <| updateModel tickTimer
+    Modify id msg -> return <| updateModel model <| modifyTimer id msg
+    Tick          -> return <| updateModel model tickTimer
     Add           -> return <| addTimer model
-    Remove id     -> return <| removeTimer id model
+
+updateModel : Model -> (SingleTimer -> SingleTimer) -> Model
+updateModel model func =
+  let isAlive timer = not timer.model.dead
+      updatedTimers = List.filter isAlive <| List.map func model.timers
+  in { model | timers = updatedTimers }
 
 modifyTimer : Int -> Timer.Msg -> SingleTimer -> SingleTimer
 modifyTimer timerId msg {id, model} =
@@ -68,8 +71,7 @@ modifyTimer timerId msg {id, model} =
 
 tickTimer : SingleTimer -> SingleTimer
 tickTimer {id, model} =
-  let model' = Timer.update Timer.Tick model
-  in SingleTimer id model'
+  SingleTimer id <| Timer.update Timer.Tick model
 
 
 -- Subscriptions

@@ -1,4 +1,4 @@
-module Component.Timer exposing (Model, Msg(Tick), init, update, view)
+module Component.Timer exposing (Model, Msg(Tick, Kill), init, update, view)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -11,6 +11,7 @@ import Color
 
 type alias Model = { duration : Duration
                    , running : Bool
+                   , dead : Bool
                    }
 
 type alias Duration = { hours: Int
@@ -19,14 +20,14 @@ type alias Duration = { hours: Int
                       }
 
 init : Model
-init = Model (Duration 0 0 0) False
+init = Model (Duration 0 0 0) False False
 
 initWithDuration : Duration -> Model
-initWithDuration d = Model d False
+initWithDuration duration = Model duration False False
 
-durationInSeconds : Duration -> Int
-durationInSeconds {hours, minutes, seconds} =
-  3600 * hours + 60 * minutes + seconds
+isTimerZero : Duration -> Bool
+isTimerZero {hours, minutes, seconds} =
+  3600 * hours + 60 * minutes + seconds == 0
 
 -- Update
 
@@ -42,14 +43,14 @@ type Msg = SetHours String
          | Start
          | Pause
          | Stop
+         | Kill
          | Tick
 
 update : Msg -> Model -> Model
 update msg ({duration, running} as model) =
   let trunc d = if d < 0 then 0 else if d > 999 then 999 else d
       inputToInt = toInt >> Result.toMaybe >> Maybe.map trunc >> Maybe.withDefault 0
-      setDuration d = Model d False
-      finished = durationInSeconds duration == 0
+      setDuration d = Model d False False
   in case msg of
     SetHours h -> setDuration { duration | hours = inputToInt h }
     SetMins  m -> setDuration { duration | minutes = inputToInt m }
@@ -62,17 +63,22 @@ update msg ({duration, running} as model) =
     DecMins  -> setDuration { duration | minutes = trunc <| duration.minutes - 1 }
     DecSecs  -> setDuration { duration | seconds = trunc <| duration.seconds - 1 }
 
-    Start -> if finished then model else { model | running = True }
+    Start -> if isTimerZero duration then model else { model | running = True }
     Pause -> { model | running = False }
-    Stop  -> init
-    Tick -> if finished
-            then { model | running = False }
-            else if running
-                 then { model | duration = updateDuration duration }
-                 else model
+    Stop  -> { model | running = False }
+    Kill  -> { model | dead    = True }
+    Tick  -> tick model
 
-updateDuration : Duration -> Duration
-updateDuration d =
+tick : Model -> Model
+tick ({duration, running} as model) =
+  if isTimerZero duration
+  then { model | running = False }
+  else if running
+       then { model | duration = tickDuration duration }
+       else model
+
+tickDuration : Duration -> Duration
+tickDuration d =
   if d.seconds > 0
   then { d | seconds = d.seconds - 1 }
   else if d.minutes > 0
@@ -86,13 +92,6 @@ updateDuration d =
                  }
             else d
 
-tick : Model -> Model
-tick ({duration, running} as model) =
-  if durationInSeconds duration == 0
-  then { model | running = False }
-  else if running
-       then { model | duration = updateDuration duration }
-       else model
 
 -- View
 
@@ -101,7 +100,7 @@ view model = span [ class "timer" ]
                   [ viewTimerButtonGroup Icon.plus
                   , viewInputGroup model
                   , viewTimerButtonGroup Icon.minus
-                  , viewPlayerButtonGroup
+                  , viewPlayerButtonGroup model
                   ]
 
 viewTimerButtonGroup : (Color.Color -> Int -> Html Msg) -> Html Msg
@@ -116,16 +115,22 @@ viewTimerButtonGroup iconFunc =
             , viewButton IncSecs
             ]
 
-viewPlayerButtonGroup : Html Msg
-viewPlayerButtonGroup =
-  let pair icon = [ span [ class "icon" ] [ icon Color.black 15 ]
-                  , span [ class "icon-hover" ] [ icon Color.white 15 ]
-                  ]
-      viewButton msg icon = button [ class "btn btn-player", onClick msg ] icon
-  in div [] [ viewButton Start <| pair Icon.play
-            , viewButton Pause <| pair Icon.pause
-            , viewButton Stop  <| pair Icon.stop
+viewPlayerButtonGroup : Model -> Html Msg
+viewPlayerButtonGroup { running } =
+  let playOrPause = if running
+                    then viewPlayerButton Pause <| Icon.pause
+                    else viewPlayerButton Start <| Icon.play
+  in div [] [ playOrPause
+            , viewPlayerButton Stop <| Icon.stop
+            , viewPlayerButton Kill <| Icon.remove
             ]
+
+viewPlayerButton : Msg -> (Color.Color -> Int -> Html Msg) -> Html Msg
+viewPlayerButton msg icon =
+  let iconPair = [ span [ class "icon" ] [ icon Color.black 15 ]
+                 , span [ class "icon-hover" ] [ icon Color.white 15 ]
+                 ]
+  in button [ class "btn btn-player", onClick msg ] iconPair
 
 viewInputGroup : Model -> Html Msg
 viewInputGroup {duration, running} =
