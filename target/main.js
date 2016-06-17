@@ -8963,253 +8963,314 @@ var _jystic$elm_font_awesome$FontAwesome$adn = _jystic$elm_font_awesome$FontAwes
 var _jystic$elm_font_awesome$FontAwesome$adjust = _jystic$elm_font_awesome$FontAwesome_Internal$icon('M896 1440v-1088q-148 0-273 73t-198 198-73 273 73 273 198 198 273 73zm768-544q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z');
 var _jystic$elm_font_awesome$FontAwesome$fa_500px = _jystic$elm_font_awesome$FontAwesome_Internal$icon('M1529 1547l-6 6q-113 114-259 175-154 64-317 64-165 0-317-64-148-63-259-175-113-112-175-258-42-103-54-189-4-28 48-36 51-8 56 20 1 1 1 4 18 90 46 159 50 124 152 226 98 98 226 152 132 56 276 56 143 0 276-56 128-55 225-152l6-6q10-10 25-6 12 3 33 22 36 37 17 58zm-472-615l-66 66 63 63q21 21-7 49-17 17-32 17-10 0-19-10l-62-61-66 66q-5 5-15 5-15 0-31-16l-2-2q-18-15-18-29 0-7 8-17l66-65-66-66q-16-16 14-45 18-18 31-18 6 0 13 5l65 66 65-65q18-17 48 13 27 27 11 44zm471 57q0 118-46 228-45 105-126 186-80 80-187 126t-228 46-228-46-187-126q-82-82-125-186-15-32-15-40h-1q-9-27 43-44 50-16 60 12 37 99 97 167h1v-341q3-136 102-232 105-103 253-103 147 0 251 103t104 249q0 147-104.5 251t-250.5 104q-58 0-112-16-28-11-13-61 16-51 44-43l14 3q14 3 32.5 6t30.5 3q104 0 176-71.5t72-174.5q0-101-72-171-71-71-175-71-107 0-178 80-64 72-64 160v413q110 67 242 67 96 0 185-36.5t156-103.5 103.5-155 36.5-183q0-198-141-339-140-140-339-140-200 0-340 140-53 53-77 87l-2 2q-8 11-13 15.5t-21.5 9.5-38.5-3q-21-5-36.5-16.5t-15.5-26.5v-680q0-15 10.5-26.5t27.5-11.5h877q30 0 30 55t-30 55h-811v483h1q40-42 102-84t108-61q109-46 231-46 121 0 228 46t187 126q81 81 126 186 46 112 46 229zm-31-581q9 8 9 18t-5.5 18-16.5 21q-26 26-39 26-9 0-16-7-106-91-207-133-128-56-276-56-133 0-262 49-27 10-45-37-9-25-8-38 3-16 16-20 130-57 299-57 164 0 316 64 137 58 235 152z');
 
-var _user$project$Component_Timer$inputStyle = function (_p0) {
-	var _p1 = _p0;
-	var stoppedColor = '#DDF';
-	var runningColor = '#DEF';
-	var doneColor = '#6FA';
-	var bgColor = _elm_lang$core$Native_Utils.eq(_p1.duration, 0) ? doneColor : (_p1.running ? runningColor : stoppedColor);
-	return _elm_lang$core$Native_List.fromArray(
-		[
-			{ctor: '_Tuple2', _0: 'text-align', _1: 'center'},
-			{ctor: '_Tuple2', _0: 'margin', _1: '0.2em auto'},
-			{ctor: '_Tuple2', _0: 'font-size', _1: '1em'},
-			{ctor: '_Tuple2', _0: 'display', _1: 'inline-block'},
-			{ctor: '_Tuple2', _0: 'border', _1: 'none'},
-			{ctor: '_Tuple2', _0: 'border-bottom', _1: 'solid 1px #ddd'},
-			{ctor: '_Tuple2', _0: '-webkit-border-radius', _1: '0.4em'},
-			{ctor: '_Tuple2', _0: 'background-color', _1: bgColor}
-		]);
-};
-var _user$project$Component_Timer$durationStyle = _elm_lang$core$Native_List.fromArray(
-	[
-		{ctor: '_Tuple2', _0: 'text-align', _1: 'center'},
-		{ctor: '_Tuple2', _0: 'margin', _1: '0.2em 0.4em'},
-		{ctor: '_Tuple2', _0: 'font-size', _1: '0.6em'},
-		{ctor: '_Tuple2', _0: 'display', _1: 'inline-block'},
-		{ctor: '_Tuple2', _0: 'color', _1: '#BBE'},
-		{ctor: '_Tuple2', _0: 'background-color', _1: '#114'},
-		{ctor: '_Tuple2', _0: 'border-color', _1: '#55A'},
-		{ctor: '_Tuple2', _0: '-webkit-border-radius', _1: '0.4em'}
-	]);
-var _user$project$Component_Timer$buttonStyle = _elm_lang$core$Native_List.fromArray(
-	[
-		{ctor: '_Tuple2', _0: 'text-align', _1: 'center'},
-		{ctor: '_Tuple2', _0: 'margin', _1: '0.2em 0.4em'},
-		{ctor: '_Tuple2', _0: 'padding', _1: '0.25em 0.9em 0.1em'},
-		{ctor: '_Tuple2', _0: 'font-size', _1: '1em'},
-		{ctor: '_Tuple2', _0: 'display', _1: 'inline-block'},
-		{ctor: '_Tuple2', _0: 'background-color', _1: '#114'},
-		{ctor: '_Tuple2', _0: 'border-color', _1: '#55A'},
-		{ctor: '_Tuple2', _0: '-webkit-border-radius', _1: '0.4em'}
-	]);
-var _user$project$Component_Timer$inputGroupStyle = _elm_lang$core$Native_List.fromArray(
-	[
-		{ctor: '_Tuple2', _0: 'display', _1: 'block'},
-		{ctor: '_Tuple2', _0: 'margin-left', _1: '0.2em'}
-	]);
-var _user$project$Component_Timer$buttonGroupStyle = _elm_lang$core$Native_List.fromArray(
-	[
-		{ctor: '_Tuple2', _0: 'display', _1: 'block'}
-	]);
-var _user$project$Component_Timer$mainStyle = _elm_lang$core$Native_List.fromArray(
-	[
-		{ctor: '_Tuple2', _0: 'display', _1: 'block'},
-		{ctor: '_Tuple2', _0: 'padding-bottom', _1: '0.8em'},
-		{ctor: '_Tuple2', _0: 'margin-top', _1: '0.8em'},
-		{ctor: '_Tuple2', _0: 'border-bottom', _1: 'solid 1px rgb(190, 190, 240)'}
-	]);
-var _user$project$Component_Timer$Model = F2(
-	function (a, b) {
-		return {duration: a, running: b};
+var _user$project$Component_Timer$viewInput = F3(
+	function (val, dis, msg) {
+		return A2(
+			_elm_lang$html$Html$input,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$value(
+					_elm_lang$core$Basics$toString(val)),
+					_elm_lang$html$Html_Attributes$disabled(dis),
+					_elm_lang$html$Html_Events$onInput(msg)
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[]));
 	});
-var _user$project$Component_Timer$init = function (duration) {
-	return A2(_user$project$Component_Timer$Model, duration, false);
+var _user$project$Component_Timer$viewPlayerButton = F2(
+	function (msg, icon) {
+		var iconPair = _elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$span,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('icon')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(icon, _elm_lang$core$Color$black, 15)
+					])),
+				A2(
+				_elm_lang$html$Html$span,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('icon-hover')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(icon, _elm_lang$core$Color$white, 15)
+					]))
+			]);
+		return A2(
+			_elm_lang$html$Html$button,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class('btn btn-player'),
+					_elm_lang$html$Html_Events$onClick(msg)
+				]),
+			iconPair);
+	});
+var _user$project$Component_Timer$tickDuration = function (d) {
+	return (_elm_lang$core$Native_Utils.cmp(d.seconds, 0) > 0) ? _elm_lang$core$Native_Utils.update(
+		d,
+		{seconds: d.seconds - 1}) : ((_elm_lang$core$Native_Utils.cmp(d.minutes, 0) > 0) ? _elm_lang$core$Native_Utils.update(
+		d,
+		{minutes: d.minutes - 1, seconds: 59}) : ((_elm_lang$core$Native_Utils.cmp(d.hours, 0) > 0) ? _elm_lang$core$Native_Utils.update(
+		d,
+		{hours: d.hours - 1, minutes: 59, seconds: 59}) : d));
+};
+var _user$project$Component_Timer$isTimerZero = function (_p0) {
+	var _p1 = _p0;
+	return _elm_lang$core$Native_Utils.eq(((3600 * _p1.hours) + (60 * _p1.minutes)) + _p1.seconds, 0);
+};
+var _user$project$Component_Timer$tick = function (_p2) {
+	var _p3 = _p2;
+	var _p5 = _p3;
+	var _p4 = _p3.duration;
+	return _user$project$Component_Timer$isTimerZero(_p4) ? _elm_lang$core$Native_Utils.update(
+		_p5,
+		{running: false}) : (_p3.running ? _elm_lang$core$Native_Utils.update(
+		_p5,
+		{
+			duration: _user$project$Component_Timer$tickDuration(_p4)
+		}) : _p5);
+};
+var _user$project$Component_Timer$Model = F3(
+	function (a, b, c) {
+		return {duration: a, running: b, dead: c};
+	});
+var _user$project$Component_Timer$initWithDuration = function (duration) {
+	return A3(_user$project$Component_Timer$Model, duration, false, false);
 };
 var _user$project$Component_Timer$update = F2(
-	function (msg, model) {
-		var durationToInt = function (_p2) {
+	function (msg, _p6) {
+		var _p7 = _p6;
+		var _p11 = _p7;
+		var _p10 = _p7.duration;
+		var setDuration = function (d) {
+			return A3(_user$project$Component_Timer$Model, d, false, false);
+		};
+		var trunc = function (d) {
+			return (_elm_lang$core$Native_Utils.cmp(d, 0) < 0) ? 0 : ((_elm_lang$core$Native_Utils.cmp(d, 999) > 0) ? 999 : d);
+		};
+		var inputToInt = function (_p8) {
 			return A2(
 				_elm_lang$core$Maybe$withDefault,
 				0,
-				_elm_lang$core$Result$toMaybe(
-					_elm_lang$core$String$toInt(_p2)));
+				A2(
+					_elm_lang$core$Maybe$map,
+					trunc,
+					_elm_lang$core$Result$toMaybe(
+						_elm_lang$core$String$toInt(_p8))));
 		};
-		var _p3 = msg;
-		switch (_p3.ctor) {
-			case 'Set':
-				return A2(
-					_user$project$Component_Timer$Model,
-					durationToInt(_p3._0),
-					false);
+		var _p9 = msg;
+		switch (_p9.ctor) {
+			case 'SetHours':
+				return setDuration(
+					_elm_lang$core$Native_Utils.update(
+						_p10,
+						{
+							hours: inputToInt(_p9._0)
+						}));
+			case 'SetMins':
+				return setDuration(
+					_elm_lang$core$Native_Utils.update(
+						_p10,
+						{
+							minutes: inputToInt(_p9._0)
+						}));
+			case 'SetSecs':
+				return setDuration(
+					_elm_lang$core$Native_Utils.update(
+						_p10,
+						{
+							seconds: inputToInt(_p9._0)
+						}));
+			case 'IncHours':
+				return setDuration(
+					_elm_lang$core$Native_Utils.update(
+						_p10,
+						{
+							hours: trunc(_p10.hours + 1)
+						}));
+			case 'IncMins':
+				return setDuration(
+					_elm_lang$core$Native_Utils.update(
+						_p10,
+						{
+							minutes: trunc(_p10.minutes + 1)
+						}));
+			case 'IncSecs':
+				return setDuration(
+					_elm_lang$core$Native_Utils.update(
+						_p10,
+						{
+							seconds: trunc(_p10.seconds + 1)
+						}));
+			case 'DecHours':
+				return setDuration(
+					_elm_lang$core$Native_Utils.update(
+						_p10,
+						{
+							hours: trunc(_p10.hours - 1)
+						}));
+			case 'DecMins':
+				return setDuration(
+					_elm_lang$core$Native_Utils.update(
+						_p10,
+						{
+							minutes: trunc(_p10.minutes - 1)
+						}));
+			case 'DecSecs':
+				return setDuration(
+					_elm_lang$core$Native_Utils.update(
+						_p10,
+						{
+							seconds: trunc(_p10.seconds - 1)
+						}));
 			case 'Start':
-				return (_elm_lang$core$Native_Utils.cmp(model.duration, 0) > 0) ? _elm_lang$core$Native_Utils.update(
-					model,
-					{running: true}) : model;
+				return _user$project$Component_Timer$isTimerZero(_p10) ? _p11 : _elm_lang$core$Native_Utils.update(
+					_p11,
+					{running: true});
 			case 'Pause':
 				return _elm_lang$core$Native_Utils.update(
-					model,
+					_p11,
 					{running: false});
+			case 'Stop':
+				return _elm_lang$core$Native_Utils.update(
+					_p11,
+					{running: false});
+			case 'Kill':
+				return _elm_lang$core$Native_Utils.update(
+					_p11,
+					{dead: true});
 			default:
-				return A2(_user$project$Component_Timer$Model, 0, false);
+				return _user$project$Component_Timer$tick(_p11);
 		}
 	});
-var _user$project$Component_Timer$tick = function (_p4) {
-	var _p5 = _p4;
-	var _p6 = {ctor: '_Tuple2', _0: _p5.duration, _1: _p5.running};
-	_v3_2:
-	do {
-		if (_p6.ctor === '_Tuple2') {
-			if (_p6._0 === 0) {
-				return A2(_user$project$Component_Timer$Model, 0, false);
-			} else {
-				if (_p6._1 === true) {
-					return A2(_user$project$Component_Timer$Model, _p6._0 - 1, true);
-				} else {
-					break _v3_2;
-				}
-			}
-		} else {
-			break _v3_2;
-		}
-	} while(false);
-	return _p5;
-};
+var _user$project$Component_Timer$Duration = F3(
+	function (a, b, c) {
+		return {hours: a, minutes: b, seconds: c};
+	});
+var _user$project$Component_Timer$init = A3(
+	_user$project$Component_Timer$Model,
+	A3(_user$project$Component_Timer$Duration, 0, 0, 0),
+	false,
+	false);
+var _user$project$Component_Timer$Tick = {ctor: 'Tick'};
+var _user$project$Component_Timer$Kill = {ctor: 'Kill'};
 var _user$project$Component_Timer$Stop = {ctor: 'Stop'};
 var _user$project$Component_Timer$Pause = {ctor: 'Pause'};
 var _user$project$Component_Timer$Start = {ctor: 'Start'};
-var _user$project$Component_Timer$Set = function (a) {
-	return {ctor: 'Set', _0: a};
+var _user$project$Component_Timer$viewPlayerButtonGroup = function (_p12) {
+	var _p13 = _p12;
+	var playOrPause = _p13.running ? A2(_user$project$Component_Timer$viewPlayerButton, _user$project$Component_Timer$Pause, _jystic$elm_font_awesome$FontAwesome$pause) : A2(_user$project$Component_Timer$viewPlayerButton, _user$project$Component_Timer$Start, _jystic$elm_font_awesome$FontAwesome$play);
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				playOrPause,
+				A2(_user$project$Component_Timer$viewPlayerButton, _user$project$Component_Timer$Stop, _jystic$elm_font_awesome$FontAwesome$stop),
+				A2(_user$project$Component_Timer$viewPlayerButton, _user$project$Component_Timer$Kill, _jystic$elm_font_awesome$FontAwesome$remove)
+			]));
+};
+var _user$project$Component_Timer$DecSecs = {ctor: 'DecSecs'};
+var _user$project$Component_Timer$DecMins = {ctor: 'DecMins'};
+var _user$project$Component_Timer$DecHours = {ctor: 'DecHours'};
+var _user$project$Component_Timer$IncSecs = {ctor: 'IncSecs'};
+var _user$project$Component_Timer$IncMins = {ctor: 'IncMins'};
+var _user$project$Component_Timer$IncHours = {ctor: 'IncHours'};
+var _user$project$Component_Timer$viewTimerButtonGroup = function (iconFunc) {
+	var icon = A2(_elm_lang$core$Basics$flip, iconFunc, 10);
+	var val = _elm_lang$core$Native_List.fromArray(
+		[
+			A2(
+			_elm_lang$html$Html$span,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class('icon')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					icon(_elm_lang$core$Color$black)
+				])),
+			A2(
+			_elm_lang$html$Html$span,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class('icon-hover')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					icon(_elm_lang$core$Color$white)
+				]))
+		]);
+	var viewButton = function (msg) {
+		return A2(
+			_elm_lang$html$Html$button,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class('btn btn-adjust'),
+					_elm_lang$html$Html_Events$onClick(msg)
+				]),
+			val);
+	};
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				viewButton(_user$project$Component_Timer$IncHours),
+				viewButton(_user$project$Component_Timer$IncMins),
+				viewButton(_user$project$Component_Timer$IncSecs)
+			]));
+};
+var _user$project$Component_Timer$SetSecs = function (a) {
+	return {ctor: 'SetSecs', _0: a};
+};
+var _user$project$Component_Timer$SetMins = function (a) {
+	return {ctor: 'SetMins', _0: a};
+};
+var _user$project$Component_Timer$SetHours = function (a) {
+	return {ctor: 'SetHours', _0: a};
+};
+var _user$project$Component_Timer$viewInputGroup = function (_p14) {
+	var _p15 = _p14;
+	var _p17 = _p15.running;
+	var _p16 = _p15.duration;
+	var seperator = _elm_lang$html$Html$text(':');
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('input-group')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A3(_user$project$Component_Timer$viewInput, _p16.hours, _p17, _user$project$Component_Timer$SetHours),
+				seperator,
+				A3(_user$project$Component_Timer$viewInput, _p16.minutes, _p17, _user$project$Component_Timer$SetMins),
+				seperator,
+				A3(_user$project$Component_Timer$viewInput, _p16.seconds, _p17, _user$project$Component_Timer$SetSecs)
+			]));
 };
 var _user$project$Component_Timer$view = function (model) {
-	var iconColor = A3(_elm_lang$core$Color$rgb, 190, 190, 240);
-	var playIcon = A2(_jystic$elm_font_awesome$FontAwesome$play, iconColor, 20);
-	var pauseIcon = A2(_jystic$elm_font_awesome$FontAwesome$pause, iconColor, 20);
-	var stopIcon = A2(_jystic$elm_font_awesome$FontAwesome$stop, iconColor, 20);
 	return A2(
 		_elm_lang$html$Html$span,
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_elm_lang$html$Html_Attributes$style(_user$project$Component_Timer$mainStyle)
+				_elm_lang$html$Html_Attributes$class('timer')
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				A2(
-				_elm_lang$html$Html$div,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$style(_user$project$Component_Timer$buttonGroupStyle)
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						A2(
-						_elm_lang$html$Html$button,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$style(_user$project$Component_Timer$durationStyle),
-								_elm_lang$html$Html_Events$onClick(
-								_user$project$Component_Timer$Set('7200'))
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html$text('2h')
-							])),
-						A2(
-						_elm_lang$html$Html$button,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$style(_user$project$Component_Timer$durationStyle),
-								_elm_lang$html$Html_Events$onClick(
-								_user$project$Component_Timer$Set('5400'))
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html$text('1h 30min')
-							])),
-						A2(
-						_elm_lang$html$Html$button,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$style(_user$project$Component_Timer$durationStyle),
-								_elm_lang$html$Html_Events$onClick(
-								_user$project$Component_Timer$Set('2700'))
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html$text('45min')
-							])),
-						A2(
-						_elm_lang$html$Html$button,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$style(_user$project$Component_Timer$durationStyle),
-								_elm_lang$html$Html_Events$onClick(
-								_user$project$Component_Timer$Set('10'))
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html$text('10s')
-							]))
-					])),
-				A2(
-				_elm_lang$html$Html$div,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$style(_user$project$Component_Timer$inputGroupStyle)
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						A2(
-						_elm_lang$html$Html$input,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$placeholder('Set duration'),
-								_elm_lang$html$Html_Attributes$value(
-								_elm_lang$core$Basics$toString(model.duration)),
-								_elm_lang$html$Html_Attributes$disabled(model.running),
-								_elm_lang$html$Html_Events$onInput(_user$project$Component_Timer$Set),
-								_elm_lang$html$Html_Attributes$style(
-								_user$project$Component_Timer$inputStyle(model))
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[]))
-					])),
-				A2(
-				_elm_lang$html$Html$div,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$style(_user$project$Component_Timer$buttonGroupStyle)
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						A2(
-						_elm_lang$html$Html$button,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$style(_user$project$Component_Timer$buttonStyle),
-								_elm_lang$html$Html_Events$onClick(_user$project$Component_Timer$Start)
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[playIcon])),
-						A2(
-						_elm_lang$html$Html$button,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$style(_user$project$Component_Timer$buttonStyle),
-								_elm_lang$html$Html_Events$onClick(_user$project$Component_Timer$Pause)
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[pauseIcon])),
-						A2(
-						_elm_lang$html$Html$button,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$style(_user$project$Component_Timer$buttonStyle),
-								_elm_lang$html$Html_Events$onClick(_user$project$Component_Timer$Stop)
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[stopIcon]))
-					]))
+				_user$project$Component_Timer$viewTimerButtonGroup(_jystic$elm_font_awesome$FontAwesome$plus),
+				_user$project$Component_Timer$viewInputGroup(model),
+				_user$project$Component_Timer$viewTimerButtonGroup(_jystic$elm_font_awesome$FontAwesome$minus),
+				_user$project$Component_Timer$viewPlayerButtonGroup(model)
 			]));
 };
 
@@ -9232,104 +9293,193 @@ var _user$project$Main$viewGithubLink = function () {
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html$text('Code is on Github')
+						_elm_lang$html$Html$text('multi-timer')
 					]))
 			]));
 }();
-var _user$project$Main$Model = function (a) {
-	return {timers: a};
-};
+var _user$project$Main$updateModel = F2(
+	function (model, func) {
+		var isAlive = function (timer) {
+			return _elm_lang$core$Basics$not(timer.model.dead);
+		};
+		var updatedTimers = A2(
+			_elm_lang$core$List$filter,
+			isAlive,
+			A2(_elm_lang$core$List$map, func, model.timers));
+		return _elm_lang$core$Native_Utils.update(
+			model,
+			{timers: updatedTimers});
+	});
+var _user$project$Main$removeTimer = F2(
+	function (id, model) {
+		var matchesId = function (timer) {
+			return _elm_lang$core$Native_Utils.eq(timer.id, id);
+		};
+		return _elm_lang$core$Native_Utils.update(
+			model,
+			{
+				timers: A2(
+					_elm_lang$core$List$filter,
+					function (_p0) {
+						return _elm_lang$core$Basics$not(
+							matchesId(_p0));
+					},
+					model.timers)
+			});
+	});
+var _user$project$Main$Model = F2(
+	function (a, b) {
+		return {uid: a, timers: b};
+	});
 var _user$project$Main$SingleTimer = F2(
 	function (a, b) {
 		return {id: a, model: b};
 	});
-var _user$project$Main$init = function () {
-	var timers = _user$project$Main$Model(
+var _user$project$Main$initTimer = function (id) {
+	return A2(_user$project$Main$SingleTimer, id, _user$project$Component_Timer$init);
+};
+var _user$project$Main$init = {
+	ctor: '_Tuple2',
+	_0: A2(
+		_user$project$Main$Model,
+		0,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_user$project$Main$initTimer(0)
+			])),
+	_1: _elm_lang$core$Platform_Cmd$none
+};
+var _user$project$Main$addTimer = function (model) {
+	var newId = model.uid + 1;
+	var timer = _user$project$Main$initTimer(newId);
+	return _elm_lang$core$Native_Utils.update(
+		model,
+		{
+			uid: newId,
+			timers: A2(
+				_elm_lang$core$Basics_ops['++'],
+				model.timers,
+				_elm_lang$core$Native_List.fromArray(
+					[timer]))
+		});
+};
+var _user$project$Main$modifyTimer = F3(
+	function (timerId, msg, _p1) {
+		var _p2 = _p1;
+		var _p4 = _p2.model;
+		var _p3 = _p2.id;
+		var model$ = _elm_lang$core$Native_Utils.eq(timerId, _p3) ? A2(_user$project$Component_Timer$update, msg, _p4) : _p4;
+		return A2(_user$project$Main$SingleTimer, _p3, model$);
+	});
+var _user$project$Main$tickTimer = function (_p5) {
+	var _p6 = _p5;
+	return A2(
+		_user$project$Main$SingleTimer,
+		_p6.id,
+		A2(_user$project$Component_Timer$update, _user$project$Component_Timer$Tick, _p6.model));
+};
+var _user$project$Main$update = F2(
+	function (msg, model) {
+		var $return = function (x) {
+			return {ctor: '_Tuple2', _0: x, _1: _elm_lang$core$Platform_Cmd$none};
+		};
+		var _p7 = msg;
+		switch (_p7.ctor) {
+			case 'Modify':
+				return $return(
+					A2(
+						_user$project$Main$updateModel,
+						model,
+						A2(_user$project$Main$modifyTimer, _p7._0, _p7._1)));
+			case 'Tick':
+				return $return(
+					A2(_user$project$Main$updateModel, model, _user$project$Main$tickTimer));
+			default:
+				return $return(
+					_user$project$Main$addTimer(model));
+		}
+	});
+var _user$project$Main$Add = {ctor: 'Add'};
+var _user$project$Main$viewAddTimerButton = function () {
+	var plusIcon = A2(_elm_lang$core$Basics$flip, _jystic$elm_font_awesome$FontAwesome$plus, 20);
+	var val = _elm_lang$core$Native_List.fromArray(
+		[
+			A2(
+			_elm_lang$html$Html$span,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class('icon')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					plusIcon(_elm_lang$core$Color$black)
+				])),
+			A2(
+			_elm_lang$html$Html$span,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class('icon-hover')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					plusIcon(_elm_lang$core$Color$white)
+				])),
+			A2(
+			_elm_lang$html$Html$span,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class('text')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text('Add')
+				]))
+		]);
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
 		_elm_lang$core$Native_List.fromArray(
 			[
 				A2(
-				_user$project$Main$SingleTimer,
-				0,
-				_user$project$Component_Timer$init(10)),
-				A2(
-				_user$project$Main$SingleTimer,
-				1,
-				_user$project$Component_Timer$init(25))
+				_elm_lang$html$Html$button,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('btn btn-add'),
+						_elm_lang$html$Html_Events$onClick(_user$project$Main$Add)
+					]),
+				val)
 			]));
-	return {ctor: '_Tuple2', _0: timers, _1: _elm_lang$core$Platform_Cmd$none};
 }();
-var _user$project$Main$updateTimer = F3(
-	function (timerId, msg, _p0) {
-		var _p1 = _p0;
-		var _p3 = _p1.model;
-		var _p2 = _p1.id;
-		var model$ = _elm_lang$core$Native_Utils.eq(timerId, _p2) ? A2(_user$project$Component_Timer$update, msg, _p3) : _p3;
-		return A2(_user$project$Main$SingleTimer, _p2, model$);
-	});
-var _user$project$Main$tickTimer = function (_p4) {
-	var _p5 = _p4;
-	return A2(
-		_user$project$Main$SingleTimer,
-		_p5.id,
-		_user$project$Component_Timer$tick(_p5.model));
-};
-var _user$project$Main$update = F2(
-	function (msg, _p6) {
-		var _p7 = _p6;
-		var _p10 = _p7.timers;
-		var _p9 = _p7;
-		var _p8 = msg;
-		if (_p8.ctor === 'Modify') {
-			return {
-				ctor: '_Tuple2',
-				_0: _elm_lang$core$Native_Utils.update(
-					_p9,
-					{
-						timers: A2(
-							_elm_lang$core$List$map,
-							A2(_user$project$Main$updateTimer, _p8._0, _p8._1),
-							_p10)
-					}),
-				_1: _elm_lang$core$Platform_Cmd$none
-			};
-		} else {
-			return {
-				ctor: '_Tuple2',
-				_0: _elm_lang$core$Native_Utils.update(
-					_p9,
-					{
-						timers: A2(_elm_lang$core$List$map, _user$project$Main$tickTimer, _p10)
-					}),
-				_1: _elm_lang$core$Platform_Cmd$none
-			};
-		}
-	});
-var _user$project$Main$Tick = function (a) {
-	return {ctor: 'Tick', _0: a};
-};
+var _user$project$Main$Tick = {ctor: 'Tick'};
 var _user$project$Main$subscriptions = function (model) {
-	return A2(_elm_lang$core$Time$every, _elm_lang$core$Time$second, _user$project$Main$Tick);
+	return A2(
+		_elm_lang$core$Time$every,
+		_elm_lang$core$Time$second,
+		function (_p8) {
+			return _user$project$Main$Tick;
+		});
 };
 var _user$project$Main$Modify = F2(
 	function (a, b) {
 		return {ctor: 'Modify', _0: a, _1: b};
 	});
-var _user$project$Main$viewTimer = function (_p11) {
-	var _p12 = _p11;
+var _user$project$Main$viewTimers = function (_p9) {
+	var _p10 = _p9;
+	var viewTimer = function (_p11) {
+		var _p12 = _p11;
+		return A2(
+			_elm_lang$html$Html_App$map,
+			_user$project$Main$Modify(_p12.id),
+			_user$project$Component_Timer$view(_p12.model));
+	};
 	return A2(
-		_elm_lang$html$Html_App$map,
-		_user$project$Main$Modify(_p12.id),
-		_user$project$Component_Timer$view(_p12.model));
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		A2(_elm_lang$core$List$map, viewTimer, _p10.timers));
 };
-var _user$project$Main$view = function (_p13) {
-	var _p14 = _p13;
-	var _p15 = _p14.timers;
-	var running = A2(
-		_elm_lang$core$List$any,
-		function (t) {
-			return _elm_lang$core$Native_Utils.cmp(t.model.duration, 0) > 0;
-		},
-		_p15);
+var _user$project$Main$view = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
@@ -9338,11 +9488,8 @@ var _user$project$Main$view = function (_p13) {
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				A2(
-				_elm_lang$html$Html$div,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
-				A2(_elm_lang$core$List$map, _user$project$Main$viewTimer, _p15)),
+				_user$project$Main$viewTimers(model),
+				_user$project$Main$viewAddTimerButton,
 				_user$project$Main$viewGithubLink
 			]));
 };
