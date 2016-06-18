@@ -7,11 +7,13 @@ import FontAwesome as Icon
 import String exposing (toInt)
 import Color
 
+
 -- Model
 
 type alias Model = { duration : Duration
                    , running : Bool
                    , dead : Bool
+                   , id : Int
                    }
 
 type alias Duration = { hours: Int
@@ -19,10 +21,10 @@ type alias Duration = { hours: Int
                       , seconds: Int
                       }
 
-init : Model
+init : Int -> Model
 init = Model (Duration 0 0 0) False False
 
-initWithDuration : Duration -> Model
+initWithDuration : Duration -> Int -> Model
 initWithDuration duration = Model duration False False
 
 isTimerZero : Duration -> Bool
@@ -47,10 +49,10 @@ type Msg = SetHours String
          | Tick
 
 update : Msg -> Model -> Model
-update msg ({duration, running} as model) =
+update msg ({duration, running, id} as model) =
   let trunc d = if d < 0 then 0 else if d > 999 then 999 else d
       inputToInt = toInt >> Result.toMaybe >> Maybe.map trunc >> Maybe.withDefault 0
-      setDuration d = Model d False False
+      setDuration d = Model d False False id
   in case msg of
     SetHours h -> setDuration { duration | hours = inputToInt h }
     SetMins  m -> setDuration { duration | minutes = inputToInt m }
@@ -97,23 +99,23 @@ tickDuration d =
 
 view : Model -> Html Msg
 view model = span [ class "timer" ]
-                  [ viewTimerButtonGroup Icon.plus
+                  [ viewTimerButtonGroup Icon.plus [IncHours, IncMins, IncSecs]
                   , viewInputGroup model
-                  , viewTimerButtonGroup Icon.minus
+                  , viewTimerButtonGroup Icon.minus [DecHours, DecMins, DecSecs]
                   , viewPlayerButtonGroup model
                   ]
 
-viewTimerButtonGroup : (Color.Color -> Int -> Html Msg) -> Html Msg
-viewTimerButtonGroup iconFunc =
+
+type alias IconFunc = (Color.Color -> Int -> Html Msg)
+
+viewTimerButtonGroup : IconFunc -> List Msg -> Html Msg
+viewTimerButtonGroup iconFunc messages =
   let icon = flip iconFunc <| 10
       val  = [ span [ class "icon" ] [ icon Color.black ]
              , span [ class "icon-hover" ] [ icon Color.white ]
              ]
       viewButton msg = button [ class "btn btn-adjust", onClick msg ] val
-  in div [] [ viewButton IncHours
-            , viewButton IncMins
-            , viewButton IncSecs
-            ]
+  in div [] <| List.map viewButton messages
 
 viewPlayerButtonGroup : Model -> Html Msg
 viewPlayerButtonGroup { running } =
@@ -125,7 +127,7 @@ viewPlayerButtonGroup { running } =
             , viewPlayerButton Kill <| Icon.remove
             ]
 
-viewPlayerButton : Msg -> (Color.Color -> Int -> Html Msg) -> Html Msg
+viewPlayerButton : Msg -> IconFunc -> Html Msg
 viewPlayerButton msg icon =
   let iconPair = [ span [ class "icon" ] [ icon Color.black 15 ]
                  , span [ class "icon-hover" ] [ icon Color.white 15 ]

@@ -17,23 +17,19 @@ main = App.program { init = init
 
 -- Model
 
+type alias TimerModel = Timer.Model
+type alias TimerMsg = Timer.Msg
+
 type alias Model = { uid : Int
-                   , timers : List SingleTimer
+                   , timers : List TimerModel
                    }
 
-type alias SingleTimer = { id : Int
-                         , model: Timer.Model
-                         }
-
 init : (Model, Cmd Msg)
-init = (Model 0 [ initTimer 0 ], Cmd.none)
-
-initTimer : Int -> SingleTimer
-initTimer id = SingleTimer id (Timer.init)
+init = (Model 0 [ Timer.init 0 ], Cmd.none)
 
 addTimer : Model -> Model
 addTimer model = let newId = model.uid + 1
-                     timer = initTimer newId
+                     timer = Timer.init newId
                  in { model | uid = newId
                             , timers = model.timers ++ [timer]
                     }
@@ -46,7 +42,7 @@ removeTimer id model =
 
 -- Update
 
-type Msg = Modify Int Timer.Msg
+type Msg = Modify Int TimerMsg
          | Tick
          | Add
 
@@ -58,20 +54,18 @@ update msg model =
     Tick          -> return <| updateModel model tickTimer
     Add           -> return <| addTimer model
 
-updateModel : Model -> (SingleTimer -> SingleTimer) -> Model
+updateModel : Model -> (TimerModel -> TimerModel) -> Model
 updateModel model func =
-  let isAlive timer = not timer.model.dead
+  let isAlive timer = not timer.dead
       updatedTimers = List.filter isAlive <| List.map func model.timers
   in { model | timers = updatedTimers }
 
-modifyTimer : Int -> Timer.Msg -> SingleTimer -> SingleTimer
-modifyTimer timerId msg {id, model} =
-  let model' = if timerId == id then Timer.update msg model else model
-  in SingleTimer id model'
+modifyTimer : Int -> TimerMsg -> TimerModel -> TimerModel
+modifyTimer timerId msg timer =
+  if timerId == timer.id then Timer.update msg timer else timer
 
-tickTimer : SingleTimer -> SingleTimer
-tickTimer {id, model} =
-  SingleTimer id <| Timer.update Timer.Tick model
+tickTimer : TimerModel -> TimerModel
+tickTimer = Timer.update Timer.Tick
 
 
 -- Subscriptions
@@ -91,7 +85,7 @@ view model = div [ id "main-container" ]
 
 viewTimers : Model -> Html Msg
 viewTimers {timers} =
-  let viewTimer {id, model} = App.map (Modify id) (Timer.view model)
+  let viewTimer timer = App.map (Modify timer.id) (Timer.view timer)
   in div [] <| List.map viewTimer timers
 
 viewAddTimerButton : Html Msg
