@@ -25,5 +25,5 @@
 }
 
 @mixin animate($name) {
-  animation: $name 1s;
+  animation: $name 0.5s;
 }

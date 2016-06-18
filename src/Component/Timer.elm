@@ -1,4 +1,4 @@
-module Component.Timer exposing (Model, Msg(Tick, Kill), init, update, view)
+module Component.Timer exposing (Model, Msg(Tick), State(Alive, Dying, Dead), init, update, view)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -15,7 +15,7 @@ import Color
 
 type alias Model = { duration : Duration
                    , running : Bool
-                   , dead : Bool
+                   , state : State
                    , id : Int
                    }
 
@@ -24,11 +24,15 @@ type alias Duration = { hours: Int
                       , seconds: Int
                       }
 
+type State = Alive
+           | Dying
+           | Dead
+
 init : Int -> Model
-init = Model (Duration 0 0 0) False False
+init = Model (Duration 0 0 0) False Alive
 
 initWithDuration : Duration -> Int -> Model
-initWithDuration duration = Model duration False False
+initWithDuration duration = Model duration False Alive
 
 isTimerZero : Duration -> Bool
 isTimerZero {hours, minutes, seconds} =
@@ -55,7 +59,7 @@ update : Msg -> Model -> Model
 update msg ({duration, running, id} as model) =
   let trunc d = if d < 0 then 0 else if d > 999 then 999 else d
       inputToInt = toInt >> Result.toMaybe >> Maybe.map trunc >> Maybe.withDefault 0
-      setDuration d = Model d False False id
+      setDuration d = Model d False Alive id
   in case msg of
     SetHours h -> setDuration { duration | hours = inputToInt h }
     SetMins  m -> setDuration { duration | minutes = inputToInt m }
@@ -70,8 +74,8 @@ update msg ({duration, running, id} as model) =
 
     Start -> if isTimerZero duration then model else { model | running = True }
     Pause -> { model | running = False }
-    Stop  -> { model | running = False }
-    Kill  -> { model | dead    = True }
+    Stop  -> { model | running = False, duration = Duration 0 0 0 }
+    Kill  -> { model | state   = Dying }
     Tick  -> tick model
 
 tick : Model -> Model
@@ -101,9 +105,9 @@ tickDuration d =
 -- View
 
 view : Model -> Style.Animation -> Html Msg
-view model stl =
-  let anim = [ ( "position", "relative" ) ] ++ (Style.render stl)
-  in span [ style anim, class "timer" ]
+view model animation =
+  let animationStyle = [("position", "relative")] ++ Style.render animation
+  in span [ style animationStyle, class ("timer " ++ toString model.state) ]
           [ viewTimerButtonGroup Icon.plus [IncHours, IncMins, IncSecs]
           , viewInputGroup model
           , viewTimerButtonGroup Icon.minus [DecHours, DecMins, DecSecs]

@@ -48,15 +48,11 @@ addTimer model =
              , timers = model.timers ++ [timer]
      }
 
-removeTimer : Int -> Model -> Model
-removeTimer id model =
-  let matchesId timer = timer.model.id == id
-  in { model | timers = List.filter (not << matchesId) model.timers }
-
 
 -- Update
 
 type alias TimerMsg = Timer.Msg
+type alias TimerState = Timer.State
 
 type Msg = Modify Int TimerMsg
          | Tick
@@ -67,31 +63,49 @@ update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
   let return x = (x, Cmd.none)
   in case msg of
-    Modify id msg -> return <| updateModel model <| modifyTimer id msg
-    Tick          -> return <| updateModel model tickTimer
+    Modify id msg -> return <| modifyTimer model id msg
+    Tick          -> return <| tickTimer model
     Add           -> return <| addTimer model
-    Animate time  -> return <| updateModel model <| tickAnimation time
+    Animate time  -> return <| tickAnimation time model
 
 updateModel : Model -> (TimerModel -> TimerModel) -> Model
 updateModel model func =
-  let isAlive timer = not timer.model.dead
-      updatedTimers = List.filter isAlive <| List.map func model.timers
-  in { model | timers = updatedTimers }
+  let kill t = { t | state = Timer.Dead }
+      remove timer acc = case timer.model.state of
+        Timer.Dying -> { timer | model = kill timer.model
+                               , anim  = Animation.removeTimer
+                       } :: acc
+        Timer.Dead  -> acc
+        Timer.Alive -> timer :: acc
+  in { model | timers = List.foldr remove [] (List.map func model.timers) }
 
-modifyTimer : Int -> TimerMsg -> TimerModel -> TimerModel
-modifyTimer timerId msg ({model} as timer) =
-  let model' = if timerId == model.id then Timer.update msg model else model
-  in { timer | model = model' }
+modifyTimer : Model -> Int -> TimerMsg -> Model
+modifyTimer model timerId msg =
+  let kill timer = { timer | state = Timer.Dead }
+      handleState timer acc = case timer.model.state of
+        Timer.Dying -> { timer | model = kill timer.model
+                               , anim  = Animation.removeTimer
+                       } :: acc
+        Timer.Dead  -> acc
+        Timer.Alive -> timer :: acc
+      modify timer = { timer | model = if timerId == timer.model.id
+                                       then Timer.update msg timer.model
+                                       else timer.model
+                     }
+  in { model | timers = List.foldr handleState []
+                     <| List.map modify model.timers
+     }
 
-tickTimer : TimerModel -> TimerModel
-tickTimer ({model} as timer) =
-  let model' = Timer.update Timer.Tick model
-  in { timer | model = model' }
+tickTimer : Model -> Model
+tickTimer model =
+  let tick timer = { timer | model = Timer.update Timer.Tick timer.model }
+  in { model | timers = List.map tick model.timers }
 
 
-tickAnimation : Float -> TimerModel -> TimerModel
-tickAnimation time timer =
-  { timer | anim = Style.tick time timer.anim }
+tickAnimation : Float -> Model -> Model
+tickAnimation time model =
+  let tick timer = { timer | anim = Style.tick time timer.anim }
+  in { model | timers = List.map tick model.timers }
 
 
 -- Subscriptions
