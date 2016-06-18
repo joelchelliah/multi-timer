@@ -3,6 +3,9 @@ module Component.Timer exposing (Model, Msg(Tick, Kill), init, update, view)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onInput, onClick)
+
+import Style
+
 import FontAwesome as Icon
 import String exposing (toInt)
 import Color
@@ -97,13 +100,15 @@ tickDuration d =
 
 -- View
 
-view : Model -> Html Msg
-view model = span [ class "timer" ]
-                  [ viewTimerButtonGroup Icon.plus [IncHours, IncMins, IncSecs]
-                  , viewInputGroup model
-                  , viewTimerButtonGroup Icon.minus [DecHours, DecMins, DecSecs]
-                  , viewPlayerButtonGroup model
-                  ]
+view : Model -> Style.Animation -> Html Msg
+view model stl =
+  let anim = [ ( "position", "relative" ) ] ++ (Style.render stl)
+  in span [ style anim, class "timer" ]
+          [ viewTimerButtonGroup Icon.plus [IncHours, IncMins, IncSecs]
+          , viewInputGroup model
+          , viewTimerButtonGroup Icon.minus [DecHours, DecMins, DecSecs]
+          , viewPlayerButtonGroup model
+          ]
 
 
 type alias IconFunc = (Color.Color -> Int -> Html Msg)

@@ -1,4 +1,5 @@
 @import 'variables';
+@import 'animations';
 @import 'mixins';
 
 body, html {
@@ -29,6 +30,14 @@ body, html {
 }
 
 .timer {
+  @include animate(slide-in);
+  animation: slide-in 1s;
+
+  &::before {
+    @include animate(slide-in);
+    animation: slide-in 1s;
+  }
+
   display: block;
   padding-bottom: 0.8em;
   margin-top: 0.8em;

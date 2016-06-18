@@ -8,6 +8,7 @@
 
 @mixin hover-icon() {
   span.icon-hover {
+    @include animate(roll-out);
     display: none;
   }
 
@@ -17,7 +18,12 @@
     }
 
     span.icon-hover {
+      @include animate(roll-in);
       display: inline-block;
     }
   }
+}
+
+@mixin animate($name) {
+  animation: $name 1s;
 }
