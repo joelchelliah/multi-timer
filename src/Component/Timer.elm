@@ -1,14 +1,16 @@
-module Component.Timer exposing (Model, Msg(Tick), State(Alive, Dying, Dead), init, update, view)
+module Component.Timer exposing ( Model, Msg, State(Alive, Dying, Dead)
+                                , init, update, view
+                                , tick, tickAnimation, handleState )
+
+import Component.Animation as Animation
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onInput, onClick)
-
 import Style
-
+import Color
 import FontAwesome as Icon
 import String exposing (toInt)
-import Color
 
 
 -- Model
@@ -16,6 +18,7 @@ import Color
 type alias Model = { duration : Duration
                    , running : Bool
                    , state : State
+                   , animation: Style.Animation
                    , id : Int
                    }
 
@@ -29,10 +32,10 @@ type State = Alive
            | Dead
 
 init : Int -> Model
-init = Model (Duration 0 0 0) False Alive
+init = initWithDuration (Duration 0 0 0)
 
 initWithDuration : Duration -> Int -> Model
-initWithDuration duration = Model duration False Alive
+initWithDuration duration = Model duration False Alive Animation.addTimer
 
 isTimerZero : Duration -> Bool
 isTimerZero {hours, minutes, seconds} =
@@ -53,13 +56,12 @@ type Msg = SetHours String
          | Pause
          | Stop
          | Kill
-         | Tick
 
 update : Msg -> Model -> Model
-update msg ({duration, running, id} as model) =
+update msg ({duration, running, id, animation} as model) =
   let trunc d = if d < 0 then 0 else if d > 999 then 999 else d
       inputToInt = toInt >> Result.toMaybe >> Maybe.map trunc >> Maybe.withDefault 0
-      setDuration d = Model d False Alive id
+      setDuration d = Model d False Alive animation id
   in case msg of
     SetHours h -> setDuration { duration | hours = inputToInt h }
     SetMins  m -> setDuration { duration | minutes = inputToInt m }
@@ -75,8 +77,7 @@ update msg ({duration, running, id} as model) =
     Start -> if isTimerZero duration then model else { model | running = True }
     Pause -> { model | running = False }
     Stop  -> { model | running = False, duration = Duration 0 0 0 }
-    Kill  -> { model | state   = Dying }
-    Tick  -> tick model
+    Kill  -> { model | state = Dying }
 
 tick : Model -> Model
 tick ({duration, running} as model) =
@@ -85,6 +86,9 @@ tick ({duration, running} as model) =
   else if running
        then { model | duration = tickDuration duration }
        else model
+
+tickAnimation : Float -> Model -> Model
+tickAnimation time model = { model | animation = Style.tick time model.animation }
 
 tickDuration : Duration -> Duration
 tickDuration d =
@@ -101,12 +105,22 @@ tickDuration d =
                  }
             else d
 
+handleState : Model -> Maybe Model
+handleState model = case model.state of
+  Alive -> Just model
+  Dying -> Just (die model)
+  Dead  -> Nothing
+
+
+die : Model -> Model
+die model = { model | state = Dead, animation = Animation.removeTimer }
+
 
 -- View
 
-view : Model -> Style.Animation -> Html Msg
-view model animation =
-  let animationStyle = [("position", "relative")] ++ Style.render animation
+view : Model -> Html Msg
+view model =
+  let animationStyle = [("position", "relative")] ++ Style.render model.animation
   in span [ style animationStyle, class ("timer " ++ toString model.state) ]
           [ viewTimerButtonGroup Icon.plus [IncHours, IncMins, IncSecs]
           , viewInputGroup model
