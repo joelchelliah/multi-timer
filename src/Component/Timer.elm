@@ -93,7 +93,6 @@ viewDuration {duration, player} =
   let enabled = Player.isPlaying player
   in Duration.view duration enabled |> App.map ModifyDuration
 
-
 viewPlayer : Model -> Html Msg
 viewPlayer {player} =
   Player.view player |> App.map ModifyPlayer
