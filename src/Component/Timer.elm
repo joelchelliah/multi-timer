@@ -1,4 +1,5 @@
-module Component.Timer exposing ( Model, Msg, init, update, view
+module Component.Timer exposing ( Model, Msg
+                                , init, update, view
                                 , tick, tickAnimation, handleState )
 
 import Component.Duration as Duration
@@ -58,14 +59,14 @@ tick ({duration, running} as model) =
        else model
 
 tickAnimation : Float -> Model -> Model
-tickAnimation time model = { model | animation = Style.tick time model.animation }
+tickAnimation time model =
+  { model | animation = Style.tick time model.animation }
 
 handleState : Model -> Maybe Model
 handleState model = case model.state of
   Alive -> Just model
   Dying -> Just (die model)
   Dead  -> Nothing
-
 
 die : Model -> Model
 die model = { model | state = Dead, animation = Animation.removeTimer }
@@ -75,26 +76,14 @@ die model = { model | state = Dead, animation = Animation.removeTimer }
 
 view : Model -> Html Msg
 view model =
-  let animationStyle = [("position", "relative")] ++ Style.render model.animation
-  in span [ style animationStyle, class ("timer " ++ toString model.state) ]
-          [ --viewTimerButtonGroup Icon.plus Duration.messagesInc
-          --,
-          viewDuration model
-          --, viewTimerButtonGroup Icon.minus Duration.messagesDec
+  let animationStyle = Style.render model.animation
+  in span [ style animationStyle, class ("timer") ]
+          [ viewDuration model
           , viewPlayerButtonGroup model
           ]
 
 
 type alias IconFunc = (Color.Color -> Int -> Html Msg)
-
-viewTimerButtonGroup : IconFunc -> List Msg -> Html Msg
-viewTimerButtonGroup iconFunc messages =
-  let icon = flip iconFunc <| 10
-      val  = [ span [ class "icon" ] [ icon Color.black ]
-             , span [ class "icon-hover" ] [ icon Color.white ]
-             ]
-      viewButton msg = button [ class "btn btn-adjust", onClick msg ] val
-  in div [] <| List.map viewButton messages
 
 viewDuration : Model -> Html Msg
 viewDuration {duration, running} =

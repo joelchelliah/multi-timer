@@ -1,4 +1,4 @@
-module Component.Animation exposing (..)
+module Component.Animation exposing (addTimer, removeTimer)
 
 import Style
 import Style.Properties exposing (..)

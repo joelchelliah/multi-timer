@@ -1,5 +1,5 @@
-module Component.Duration exposing ( Model, Msg, init, update, tick, view
-                                   , isZero )
+module Component.Duration exposing ( Model, Msg
+                                   , init, update, view, tick, isZero )
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -9,6 +9,8 @@ import FontAwesome as Icon
 import Color
 
 
+-- Model
+
 type alias Model = { hours: Int
                    , minutes: Int
                    , seconds: Int
@@ -16,6 +18,9 @@ type alias Model = { hours: Int
 
 init : Model
 init = Model 0 0 0
+
+
+-- Update
 
 type Msg = SetHours String
          | SetMins  String
@@ -53,39 +58,46 @@ tick ({hours, minutes, seconds}  as model) =
 isZero : Model -> Bool
 isZero {hours, minutes, seconds} = 3600 * hours + 60 * minutes + seconds == 0
 
+
+-- View
+
 view : Model -> Bool -> Html Msg
-view model running =
-  let inputGroup = viewInputGroup model running
-      incGroup   = viewButtonGroup Icon.plus  [ IncHours, IncMins, IncSecs ]
-      decGroup   = viewButtonGroup Icon.minus [ DecHours, DecMins, DecSecs ]
-  in inputGroup
+view model enabled =
+  div [] [ viewButtonGroup Icon.plus  [ IncHours, IncMins, IncSecs ]
+         , viewInputGroup model enabled
+         , viewButtonGroup Icon.minus [ DecHours, DecMins, DecSecs ]
+         ]
 
 type alias IconFunc = (Color.Color -> Int -> Html Msg)
 
 viewButtonGroup : IconFunc -> List Msg -> Html Msg
 viewButtonGroup iconFunc messages =
-  div [] <| List.map (viewButton iconFunc) messages
+  let buttonFunc = viewButton iconFunc
+  in messages
+  |> List.map buttonFunc
+  |> div [ class "btn-group" ]
 
 viewButton : IconFunc -> Msg -> Html Msg
 viewButton iconFunc msg =
-  let icon = flip iconFunc <| 10
-      val  = [ span [ class "icon" ] [ icon Color.black ]
-             , span [ class "icon-hover" ] [ icon Color.white ]
-             ]
-  in button [ class "btn btn-adjust", onClick msg ] val
+  let icon klass col = span [ class klass ] [ iconFunc col 10 ]
+      iconGroup      = [ icon "icon" Color.black
+                       , icon "icon-hover" Color.white
+                       ]
+  in button [ class "btn btn-adjust", onClick msg ] iconGroup
 
 viewInputGroup : Model -> Bool -> Html Msg
-viewInputGroup model running =
-  let inputs = [ viewInput model.hours running   SetHours
-               , viewInput model.minutes running SetMins
-               , viewInput model.seconds running SetSecs
+viewInputGroup model enabled =
+  let inputs = [ viewInput model.hours   enabled SetHours
+               , viewInput model.minutes enabled SetMins
+               , viewInput model.seconds enabled SetSecs
                ]
   in List.intersperse (text ":") inputs
   |> div [ class "input-group" ]
 
 viewInput : Int -> Bool -> (String -> Msg) -> Html Msg
-viewInput val dis msg =
-  input [ value <| toString val
-        , disabled dis
-        , onInput msg
-        ] []
+viewInput num disable msg =
+  let val = toString num
+  in input [ value val
+           , disabled disable
+           , onInput msg
+           ] []
