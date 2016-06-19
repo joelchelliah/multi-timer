@@ -79,7 +79,7 @@ viewButtonGroup iconFunc messages =
 
 viewButton : IconFunc -> Msg -> Html Msg
 viewButton iconFunc msg =
-  let icon klass col = span [ class klass ] [ iconFunc col 10 ]
+  let icon cls col = span [ class cls ] [ iconFunc col 10 ]
       iconGroup      = [ icon "icon" Color.black
                        , icon "icon-hover" Color.white
                        ]

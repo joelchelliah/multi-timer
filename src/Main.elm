@@ -70,9 +70,10 @@ modifyTimer model id msg =
 -- Subscriptions
 
 subscriptions : Model -> Sub Msg
-subscriptions _ = Sub.batch [ Time.every Time.second (\_ -> Tick)
-                            , AnimationFrame.times Animate
-                            ]
+subscriptions _ =
+  Sub.batch [ Time.every Time.second (\_ -> Tick)
+            , AnimationFrame.times Animate
+            ]
 
 
 -- View
@@ -87,21 +88,20 @@ view model = div [ id "main-container" ]
 viewTimers : Model -> Html Msg
 viewTimers {timers} =
   let viewTimer timer = App.map (Modify timer.id) (Timer.view timer)
-  in div [style [("overflow", "hidden")]] <| List.map viewTimer timers
+  in div [] (List.map viewTimer timers)
 
 viewAddTimerButton : Html Msg
 viewAddTimerButton =
-  let plusIcon = flip Icon.plus <| 20
-      val = [ span [ class "icon" ] [ plusIcon Color.black ]
-            , span [ class "icon-hover" ] [ plusIcon Color.white ]
+  let icon cls col = span [ class cls ] [ Icon.plus col 25 ]
+      val = [ icon "icon" Color.black
+            , icon "icon-hover" Color.white
             , span [ class "text" ] [ text "Add" ]
             ]
-  in div [] [ button [ class "btn btn-add", onClick Add ] val ]
+  in button [ class "btn btn-add", onClick Add ] val
 
 viewGithubLink : Html Msg
 viewGithubLink =
-  let url = "https://github.com/joelchelliah/multi-timer"
-  in div [ id "github-link" ]
-         [ Icon.github (Color.black) 20
-         , a [ href url ] [ text "multi-timer" ]
-         ]
+  let icon = Icon.github (Color.black) 20
+      url  = "https://github.com/joelchelliah/multi-timer"
+      link = a [ href url ] [ text "multi-timer" ]
+  in div [ id "github-link" ] [ icon, link ]

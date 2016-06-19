@@ -17,19 +17,22 @@ import FontAwesome as Icon
 -- Model
 
 type alias Model = { duration : Duration.Model
-                   , running : Bool
                    , state : State
                    , animation: Style.Animation
                    , id : Int
                    }
 
-type State = Alive | Dying | Dead
+type State = Playing
+           | Paused
+           | Stopped
+           | Dying
+           | Dead
 
 init : Int -> Model
 init = initWithDuration Duration.init
 
 initWithDuration : Duration.Model -> Int -> Model
-initWithDuration duration = Model duration False Alive Animation.addTimer
+initWithDuration duration = Model duration Paused Animation.addTimer
 
 
 -- Update
@@ -41,22 +44,24 @@ type Msg = Modify Duration.Msg
          | Kill
 
 update : Msg -> Model -> Model
-update msg ({duration, running, id, animation} as model) =
+update msg ({duration} as model) =
   case msg of
-    Modify msg -> { model | duration = Duration.update msg duration, running = False }
+    Modify msg -> { model | duration = Duration.update msg duration, state = Paused }
 
-    Start -> if Duration.isZero duration then model else { model | running = True }
-    Pause -> { model | running = False }
-    Stop  -> { model | running = False, duration = Duration.init }
+    Start -> if Duration.isZero duration then model else { model | state = Playing }
+    Pause -> { model | state = Paused }
+    Stop  -> { model | state = Stopped, duration = Duration.init }
     Kill  -> { model | state = Dying }
 
 tick : Model -> Model
-tick ({duration, running} as model) =
+tick ({duration, state} as model) =
   if Duration.isZero duration
-  then { model | running = False }
-  else if running
-       then { model | duration = Duration.tick duration }
-       else model
+  then { model | state = Stopped }
+  else if state == Playing then tickDuration model else model
+
+tickDuration : Model -> Model
+tickDuration model =
+  { model | duration = Duration.tick model.duration }
 
 tickAnimation : Float -> Model -> Model
 tickAnimation time model =
@@ -64,9 +69,9 @@ tickAnimation time model =
 
 handleState : Model -> Maybe Model
 handleState model = case model.state of
-  Alive -> Just model
-  Dying -> Just (die model)
   Dead  -> Nothing
+  Dying -> Just (die model)
+  _     -> Just model
 
 die : Model -> Model
 die model = { model | state = Dead, animation = Animation.removeTimer }
@@ -86,18 +91,19 @@ view model =
 type alias IconFunc = (Color.Color -> Int -> Html Msg)
 
 viewDuration : Model -> Html Msg
-viewDuration {duration, running} =
-  let durationView = Duration.view duration running
-  in App.map Modify durationView
+viewDuration {duration, state} =
+  let enabled = state == Playing
+  in Duration.view duration enabled
+  |> App.map Modify
 
 viewPlayerButtonGroup : Model -> Html Msg
-viewPlayerButtonGroup { running } =
-  let playOrPause = if running
-                    then viewPlayerButton Pause <| Icon.pause
-                    else viewPlayerButton Start <| Icon.play
+viewPlayerButtonGroup { state } =
+  let playOrPause = if state == Playing
+                    then viewPlayerButton Pause Icon.pause
+                    else viewPlayerButton Start Icon.play
   in div [] [ playOrPause
-            , viewPlayerButton Stop <| Icon.stop
-            , viewPlayerButton Kill <| Icon.remove
+            , viewPlayerButton Stop Icon.stop
+            , viewPlayerButton Kill Icon.remove
             ]
 
 viewPlayerButton : Msg -> IconFunc -> Html Msg
