@@ -1,5 +1,5 @@
-module Component.Duration exposing ( Model, Msg
-                                   , init, update, view, tick, isZero )
+module Component.Duration exposing ( Model, Msg, init, update, view
+                                   , tick, isZero )
 
 import Html exposing (..)
 import Html.Attributes exposing (..)

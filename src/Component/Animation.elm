@@ -22,10 +22,10 @@ timerAnimation =
              , MarginTop 0 Em
              , Display InlineBlock
              ]
-  , open = [ Height 120 Px
+  , open = [ Height 170 Px
           , Opacity 1
-          , PaddingBottom 0.8 Em
-          , MarginTop 0.8 Em
+          , PaddingBottom 1 Em
+          , MarginTop 1 Em
           , Display InlineBlock
           ]
   }

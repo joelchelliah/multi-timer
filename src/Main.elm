@@ -92,10 +92,10 @@ viewTimers {timers} =
 
 viewAddTimerButton : Html Msg
 viewAddTimerButton =
-  let icon cls col = span [ class cls ] [ Icon.plus col 25 ]
+  let icon cls col = span [ class cls ] [ Icon.plus col 20 ]
       val = [ icon "icon" Color.black
             , icon "icon-hover" Color.white
-            , span [ class "text" ] [ text "Add" ]
+            , span [ class "text" ] [ text "Add Timer" ]
             ]
   in button [ class "btn btn-add", onClick Add ] val
 
