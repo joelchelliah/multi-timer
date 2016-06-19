@@ -1,17 +1,11 @@
 import Component.Timer as Timer
-import Component.Animation as Animation
 
 import Time exposing (Time, second)
-
 import Html exposing (..)
 import Html.App as App
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-
-import Style
-
 import AnimationFrame
-
 import FontAwesome as Icon
 import Color
 
@@ -44,7 +38,6 @@ addTimer model =
 -- Update
 
 type alias TimerMsg = Timer.Msg
-type alias TimerState = Timer.State
 
 type Msg = Modify Int TimerMsg
          | Tick
