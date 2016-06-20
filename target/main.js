@@ -15262,7 +15262,7 @@ var _user$project$Component_Player$viewButton = F3(
 						]),
 					_elm_lang$core$Native_List.fromArray(
 						[
-							A2(iconFunc, col, 15)
+							A2(iconFunc, col, 20)
 						]));
 			});
 		var val = _elm_lang$core$Native_List.fromArray(
