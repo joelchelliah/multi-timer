@@ -52,7 +52,7 @@ type alias IconFunc = (Color.Color -> Int -> Html Msg)
 
 viewButton : Msg -> IconFunc -> String -> Html Msg
 viewButton msg iconFunc txt =
-  let icon cls col = span [ class cls ] [ iconFunc col 15 ]
+  let icon cls col = span [ class cls ] [ iconFunc col 20 ]
       val          = [ icon "icon" Color.black
                      , icon "icon-hover" Color.white
                      , span [ class "text" ] [ text txt ]
