@@ -20,6 +20,7 @@ type alias Model = { state: State
 type State = Playing
            | Paused
            | Stopped
+           | Completed
 
 init : Model
 init = Model Stopped Duration.init
@@ -45,13 +46,17 @@ update msg model =
                   else { model | duration = Duration.update msg model.duration }
 
 tick : Model -> Model
-tick model =
-  if Duration.isZero model.duration
-  then init
-  else if model.state == Playing
-       then { model | duration = Duration.tick model.duration }
-       else model
+tick ({state, duration} as model) =
+  if state == Playing && not (Duration.isZero duration)
+  then tickDuration model
+  else model
 
+tickDuration : Model -> Model
+tickDuration model =
+  let newDuration = Duration.tick model.duration
+  in if Duration.isZero newDuration
+     then { model | duration = newDuration, state = Completed }
+     else { model | duration = newDuration }
 
 -- View
 
@@ -67,8 +72,9 @@ view model =
 
 viewDuration : Model -> Html Msg
 viewDuration {state, duration} =
-  let enabled = state == Playing
-  in Duration.view duration enabled |> App.map Modify
+  let enabled   = state == Playing
+      completed = state == Completed
+  in Duration.view duration enabled completed |> App.map Modify
 
 type alias IconFunc = (Color.Color -> Int -> Html Msg)
 

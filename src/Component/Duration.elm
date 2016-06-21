@@ -61,12 +61,13 @@ isZero {hours, minutes, seconds} = 3600 * hours + 60 * minutes + seconds == 0
 
 -- View
 
-view : Model -> Bool -> Html Msg
-view model enabled =
-  div [] [ viewButtonGroup Icon.plus  [ IncHours, IncMins, IncSecs ]
-         , viewInputGroup model enabled
-         , viewButtonGroup Icon.minus [ DecHours, DecMins, DecSecs ]
-         ]
+view : Model -> Bool -> Bool -> Html Msg
+view model enabled completed =
+  let done = completed && isZero model
+  in div [] [ viewButtonGroup Icon.plus  [ IncHours, IncMins, IncSecs ]
+            , viewInputGroup model enabled done
+            , viewButtonGroup Icon.minus [ DecHours, DecMins, DecSecs ]
+            ]
 
 type alias IconFunc = (Color.Color -> Int -> Html Msg)
 
@@ -85,19 +86,21 @@ viewButton iconFunc msg =
                        ]
   in button [ class "btn btn-adjust", onClick msg ] iconGroup
 
-viewInputGroup : Model -> Bool -> Html Msg
-viewInputGroup model enabled =
-  let inputs = [ viewInput model.hours   enabled SetHours
-               , viewInput model.minutes enabled SetMins
-               , viewInput model.seconds enabled SetSecs
+viewInputGroup : Model -> Bool -> Bool -> Html Msg
+viewInputGroup model enabled done =
+  let inputs = [ viewInput model.hours   enabled done SetHours
+               , viewInput model.minutes enabled done SetMins
+               , viewInput model.seconds enabled done SetSecs
                ]
   in List.intersperse (text ":") inputs
   |> div [ class "input-group" ]
 
-viewInput : Int -> Bool -> (String -> Msg) -> Html Msg
-viewInput num disable msg =
+viewInput : Int -> Bool -> Bool -> (String -> Msg) -> Html Msg
+viewInput num disable done msg =
   let val = toString num
+      completedClass = if done then "completed" else ""
   in input [ value val
+           , class completedClass
            , disabled disable
            , onInput msg
            ] []
