@@ -1,8 +1,9 @@
 # Artifacts and packages
 elm-stuff
+node_modules
 
 # Output
-target
+elm.js
 css/style.min.css
 
 # Other
